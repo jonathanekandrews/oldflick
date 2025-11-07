@@ -1,0 +1,41 @@
+Based on my thorough examination of your Base44 settings, here's what I found:
+
+## Base44 Settings Review
+
+I checked all the relevant sections in your Base44 app and **did NOT find any "Allowed Domains" or "Redirect URLs" fields** in:
+
+1. **Domains section** - Only shows:[1]
+   - Built-in domain: `old-flick-5eec161d.base44.app`
+   - Custom domains: For connecting domains you own (e.g., `oldflick.com`)
+
+2. **App Settings section** - Contains:[2][3]
+   - App Info (logo, description)
+   - General Settings (Main Page, App Visibility)
+   - Platform Badge toggle
+   - Hide Entity Creator toggle
+   - AI Agents, Clone App, Backend Functions
+   - Danger Zone
+
+3. **Authentication section** - Shows authentication methods (Email/Password, Google, Microsoft, Facebook, SSO) but no redirect URL configuration[4]
+
+## The Issue Explained
+
+The 404 error when accessing `https://oldflick-jonathangdec.replit.app/` occurs because:
+
+**Base44 doesn't appear to have a visible "Allowed Origins" or "CORS" settings panel** in the current interface. This is likely because Base44 handles CORS automatically based on the domains you've configured in the Domains section.
+
+## Recommended Solution
+
+The Replit deployment URL (`oldflick-jonathangdec.replit.app`) **cannot** be added as a custom domain in Base44 (since you don't own the replit.app domain). Instead, you should:
+
+1. **Use your verified custom domain** (`oldflick.com`) for the Replit deployment
+2. **Or use the Base44 built-in domain** (`old-flick-5eec161d.base44.app`) in your Replit configuration
+
+The issue is likely in your Replit code configuration rather than Base44 settings. You may need to update how your frontend connects to Base44 in the `src/api/base44Client.js` file to properly handle authentication flows with the Replit domain.
+
+Would you like me to help investigate the Replit deployment configuration or the Base44 client code?
+
+[1](https://app.base44.com/apps/6904bf7c50abb3485eec161d/editor/workspace/domains)
+[2](https://app.base44.com/apps/6904bf7c50abb3485eec161d/editor/workspace/app-settings)
+[3](https://app.base44.com/apps/6904bf7c50abb3485eec161d/editor/workspace/app-settings)
+[4](https://app.base44.com/apps/6904bf7c50abb3485eec161d/editor/workspace/authentication)
