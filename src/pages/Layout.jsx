@@ -7,7 +7,7 @@ import { base44 } from "@/api/base44Client";
 import { Search, User, LogOut, Menu, X, MoreHorizontal, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import FilterBar from "./components/browse/FilterBar";
+import FilterBar from "@/components/browse/FilterBar";
 
 export default function Layout({ children, currentPageName }) {
   const location = useLocation();
