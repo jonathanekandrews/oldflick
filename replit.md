@@ -1,11 +1,12 @@
-# Base44 App - Replit Environment
+# Oldflick - Self-Hosted Streaming Platform
 
 ## Overview
-This is a React + Vite application that serves as a frontend for a Base44-powered streaming content platform. The app communicates with the Base44 API for authentication, content management, and backend functionality.
+Oldflick is a self-hosted classic films and TV streaming platform. The app features a React + Vite frontend with Express.js + PostgreSQL backend, using Supabase for video/image file storage.
 
 **Current Status:** Live at https://oldflick.com with custom domain
 **Created:** November 7, 2025
-**Framework:** React 18.2 + Vite 6.4.1
+**Migrated to Self-Hosted:** November 8, 2025
+**Framework:** React 18.2 + Vite 6.4.1 (Frontend) + Express.js (Backend)
 **Package Manager:** npm
 **Production URL:** https://oldflick.com
 
@@ -21,11 +22,19 @@ This is a React + Vite application that serves as a frontend for a Base44-powere
 - **Lucide React**: Icon library
 - **Framer Motion**: Animation library
 
-### Backend Integration
-- **Base44 SDK**: Primary backend API client
-- App ID: `6904bf7c50abb3485eec161d`
-- Authentication: Required for all operations
-- Integrations: Stripe payments, LLM, email, file uploads
+### Backend Stack
+- **Express.js**: API server (Port 3000)
+- **PostgreSQL**: Database (Neon-hosted)
+- **JWT Authentication**: Secure token-based auth
+- **Stripe Integration**: Subscription payments
+- **Supabase Storage**: Video and image file hosting
+
+### Storage Architecture
+- **PostgreSQL**: All content metadata (titles, descriptions, URLs, user data)
+- **Supabase**: Video files (.mp4) and images (.jpg, .png) via public URLs
+- **Buckets**: 
+  - `oldflick-videos` (films)
+  - `oldflick-television` (TV shows)
 
 ## Configuration for Replit
 

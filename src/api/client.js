@@ -85,8 +85,8 @@ class APIClient {
       window.location.href = '/';
     },
 
-    redirectToLogin: (returnUrl) => {
-      window.location.href = `/?login=true&return=${encodeURIComponent(returnUrl)}`;
+    redirectToLogin: (returnUrl = '/browse') => {
+      window.location.href = `/Login?return=${encodeURIComponent(returnUrl)}`;
     },
   };
 

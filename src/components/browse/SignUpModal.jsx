@@ -1,12 +1,14 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Crown, Sparkles, Film, Clock, Star, Heart, X } from "lucide-react";
-import { apiClient as base44 } from "@/api/client";
 
 export default function SignUpModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
+  
   const handleSignUp = () => {
-    base44.auth.redirectToLogin();
+    navigate('/Login?return=/browse');
   };
 
   const features = [
