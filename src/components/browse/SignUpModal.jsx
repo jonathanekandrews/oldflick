@@ -2,7 +2,7 @@ import React from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Crown, Sparkles, Film, Clock, Star, Heart, X } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { apiClient as base44 } from "@/api/client";
 
 export default function SignUpModal({ isOpen, onClose }) {
   const handleSignUp = () => {

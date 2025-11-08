@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { apiClient as base44 } from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { ArrowLeft, Play, Pause, Volume2, VolumeX, Maximize, Plus, Check, AlertCircle, X, Crown } from "lucide-react";

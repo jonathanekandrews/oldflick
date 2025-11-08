@@ -1,4 +1,4 @@
-import { base44 } from './base44Client';
+import { apiClient as base44 } from './base44Client';
 
 
 export const createCheckoutSession = base44.functions.createCheckoutSession;

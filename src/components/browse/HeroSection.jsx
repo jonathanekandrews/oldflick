@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { base44 } from "@/api/base44Client";
+import { apiClient as base44 } from "@/api/client";
 import { Play, Info, Plus, Check, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

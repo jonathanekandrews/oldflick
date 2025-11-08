@@ -26,9 +26,13 @@ import ClassicTV from "./ClassicTV";
 
 import SubTest from "./SubTest";
 
+import Login from "./Login";
+
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
+    
+    Login: Login,
     
     Browse: Browse,
     
@@ -80,8 +84,9 @@ function PagesContent() {
         <Layout currentPageName={currentPage}>
             <Routes>            
                 
-                    <Route path="/" element={<Browse />} />
+                <Route path="/" element={<Browse />} />
                 
+                <Route path="/Login" element={<Login />} />
                 
                 <Route path="/Browse" element={<Browse />} />
                 

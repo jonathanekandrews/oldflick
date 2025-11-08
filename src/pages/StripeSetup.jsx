@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { apiClient as base44 } from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { CheckCircle, XCircle, AlertCircle, Copy, ExternalLink, Loader2 } from "lucide-react";

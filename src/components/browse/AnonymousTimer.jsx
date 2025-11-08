@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Clock, Sparkles, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { base44 } from "@/api/base44Client";
+import { apiClient as base44 } from "@/api/client";
 
 const GRACE_PERIOD_MS = 30 * 60 * 1000; // 30 minutes
 const WARNING_1_MS = 25 * 60 * 1000; // 25 minutes (5 min left)
