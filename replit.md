@@ -3,10 +3,11 @@
 ## Overview
 This is a React + Vite application that serves as a frontend for a Base44-powered streaming content platform. The app communicates with the Base44 API for authentication, content management, and backend functionality.
 
-**Current Status:** Successfully configured for Replit environment
+**Current Status:** Live at https://oldflick.com with custom domain
 **Created:** November 7, 2025
 **Framework:** React 18.2 + Vite 6.4.1
 **Package Manager:** npm
+**Production URL:** https://oldflick.com
 
 ## Project Architecture
 
@@ -51,6 +52,8 @@ server: {
 - **Type:** autoscale
 - **Build:** npm run build
 - **Run:** npx vite preview --host 0.0.0.0 --port 5000
+- **Custom Domain:** oldflick.com (verified and active)
+- **SSL:** Automatically provisioned by Replit
 
 ## Project Structure
 
@@ -146,9 +149,20 @@ npm run preview
 - `zod`: Schema validation
 - `react-hook-form`: Form management
 
-## Recent Changes (November 7, 2025)
+## Recent Changes
 
-### Replit Environment Setup
+### Custom Domain Deployment (November 8, 2025)
+1. ✅ Added custom domain oldflick.com to Replit deployment
+2. ✅ Updated Namecheap DNS records:
+   - A Record: @ → 34.111.179.208 (Replit IP)
+   - TXT Record: replit-verify=7d4583ad-7b0e-4749-b3ce-4d97247d8d47
+3. ✅ Verified oldflick.com in Base44 custom domains (for authentication)
+4. ✅ DNS propagation completed successfully
+5. ✅ Domain verified in Replit Deployments
+6. ✅ SSL certificate automatically provisioned
+7. ✅ Site now live at https://oldflick.com
+
+### Replit Environment Setup (November 7, 2025)
 1. ✅ Installed Node.js 20 and npm dependencies
 2. ✅ Updated `vite.config.js` to bind to 0.0.0.0:5000
 3. ✅ Created `.gitignore` for Node.js projects
