@@ -11,7 +11,9 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5000', 'https://oldflick.com'],
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://oldflick.com']
+    : true,
   credentials: true
 }));
 
