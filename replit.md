@@ -188,7 +188,19 @@ The app connects to the Base44 service using app ID `6904bf7c50abb3485eec161d`. 
 This is not a Replit environment issue - the Vite dev server is running correctly.
 
 ### Stripe Integration
-The app includes Stripe payment integration for subscriptions. Stripe webhook configuration is available at `/StripeSetup` page.
+The app includes Stripe payment integration for subscriptions:
+- **Status:** ✅ Configured for PRODUCTION (live mode)
+- **Live Secret Key:** Configured in Base44 (November 8, 2025)
+- **Price ID:** price_1SQaIJFBv1tO0CA82u7bl2EM ($2.99/month)
+- **Webhook URL:** https://oldflick.com/api/functions/stripeWebhook
+- **Webhook Configuration:** Available at `/StripeSetup` page
+- **Required Webhook Events:**
+  - checkout.session.completed
+  - customer.subscription.created
+  - customer.subscription.updated
+  - customer.subscription.deleted
+  - invoice.paid
+  - invoice.payment_failed
 
 ## User Preferences
 None specified yet.
