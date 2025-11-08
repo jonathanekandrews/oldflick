@@ -28,11 +28,15 @@ import SubTest from "./SubTest";
 
 import Login from "./Login";
 
+import ContentManagement from "./ContentManagement";
+
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
     
     Login: Login,
+    
+    ContentManagement: ContentManagement,
     
     Browse: Browse,
     
@@ -113,6 +117,8 @@ function PagesContent() {
                 <Route path="/ClassicTV" element={<ClassicTV />} />
                 
                 <Route path="/SubTest" element={<SubTest />} />
+                
+                <Route path="/ContentManagement" element={<ContentManagement />} />
                 
             </Routes>
         </Layout>
