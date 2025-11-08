@@ -1,0 +1,67 @@
+**Situation Report — Oldflick on Replit (Remote Host), post-migration:**
+
+**1. Deployment Status**
+- **Oldflick is now deployed on Replit.** Both code base and database access have shifted from Supabase/Previous host to Neon and Replit for remote development and production.
+- The live app is accessible on Replit, with at least one deployment verified in browser history and active tab.
+
+**2. Database**
+- **Database migration completed**: Neon is the new backend database replacing Supabase, allowing for direct PostgreSQL connectivity with the Replit environment.
+- Network and connection configurations must ensure Neon NAT Gateway IPs are allowed in your previous Supabase settings.
+- All new writes, API actions, and app behaviour should point to Neon DB. Final step: Ensure `.env` or secrets on Replit reference Neon’s connection string.
+
+**3. Stripe Integration**
+- **Live Stripe keys entered and configured**: In Base44 and now available for remote host/production.
+- Stripe webhooks and key management must be replicated on the Replit host if any keys or secrets hit Replit directly (e.g., by environment variables or deployment secrets).
+- Stripe billing and subscriptions should operate in live mode with production keys.
+
+**4. Domain & DNS**
+- If custom domain (oldflick.com) is pointed to Replit deployment, confirm DNS settings now reflect Replit’s generated A and TXT records for the domain.
+- DNS propagation can take up to 48 hours; use Base44 or Replit’s domain verification tools to ensure the domain reaches the new deployment.
+
+**5. Problems/Issues**
+- No major outages or deployment incidents currently reported as of November 2025—Replit platform status is normal.[1]
+- Reserved VMs and autoscale options are available on Replit; ensure you’re deploying the optimal type for your app load (see Replit docs for deployment options).
+- If issues occur (e.g., app offline, deployment fails, webhook errors), monitor traffic and logs via Replit’s dashboard. Some users have noted recent intermittent node failures, but no widespread outage appears to affect your type of deployment.[2][3]
+
+**6. Outstanding Tasks**
+- **Test End-to-End**: Payment, subscription, user login, CRUD on Neon DB, webhook response.
+- **Secure Secrets**: Make sure all Stripe, Neon, and other sensitive keys are secured in Replit’s environment/secret manager.
+- **Monitor**: Check Replit logs, analytics, and error alerts post-deployment. Set up additional monitoring (Datadog, New Relic, etc.) if needed for production.
+
+**Summary:**  
+Migration complete. Remote host (Replit) is live with Neon as DB, Stripe in live mode, and custom domain configuration nearly finished. Remaining actions: test for errors, monitor performance, and verify production secrets/environment variables.
+
+If you need deployment tests, debugging, or step-by-step verification for any module (Stripe events, API endpoints, DB records), let me know!
+
+[1](https://status.replit.com)
+[2](https://replit.discourse.group/t/replit-deployments-are-all-down-right-now/4567)
+[3](https://replit.discourse.group/t/deployment-issues/4594)
+[4](https://dashboard.stripe.com/acct_1SPTp1FBv1tO0CA8/apikeys)
+[5](https://replit.com/@JonathanGdeC/Oldflick)
+[6](https://replit.com/@JonathanGdeC/Oldflick)
+[7](https://replit.com/~)
+[8](https://replit.com/usage)
+[9](https://replit.com/@JonathanGdeC/oldflick)
+[10](https://replit.com/repls)
+[11](https://replit.com/login)
+[12](https://replit.com)
+[13](https://replit.com/t/diiiploy-fzuqgl/repls/B3-PlatoAgentEngine)
+[14](https://replit.com/t/diiiploy-fzuqgl/repls/B3-PlatoAgentEngine#.replit)
+[15](https://replit.com/t/diiiploy-fzuqgl)
+[16](https://status.replit.com/history/2025/september)
+[17](https://status.replit.com/notices/9k1qyqwogoa4u5ic-deployments-inaccessible)
+[18](https://skywork.ai/skypage/en/Replit-Speed-Test:-A-2025-Deep-Dive-from-Idea-to-Deployment/1974363274692194304)
+[19](https://neon.com/docs/guides/logical-replication-supabase-to-neon)
+[20](https://docs.base44.com/Guides/Setting-up-your-custom-domain)
+[21](https://www.reddit.com/r/replit/comments/1k9q6d4/replit_for_production_guide/)
+[22](https://docs.replit.com/cloud-services/deployments/custom-domains)
+[23](https://www.youtube.com/watch?v=OqSbgBMoTm0)
+[24](https://supabase.com/blog/using-supabase-replit)
+[25](https://fr.hostadvice.com/ai-app-builders/base44-vs-replit/)
+[26](https://www.reddit.com/r/replit/comments/1l41ugt/deployment_issues/)
+[27](https://www.youtube.com/watch?v=OPKWTwLODzs)
+[28](https://www.softr.io/blog/replit-vs-base44)
+[29](https://replit.com)
+[30](https://www.closefuture.io/blogs/replit-inbuilt-database-vs-supabase-database)
+[31](https://www.facebook.com/groups/codingwithai/posts/761801373289923/)
+[32](https://stackoverflow.com/questions/79391440/problem-deploying-python-fastapi-on-replit-with-sentence-transformers)
