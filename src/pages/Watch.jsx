@@ -100,7 +100,7 @@ export default function Watch() {
         return;
       }
 
-      const allContent = await base44.entities.Content.list();
+      const allContent = await base44.entities.Content.findMany();
       const foundContent = allContent.find(c => c.id === contentId);
       
       if (!foundContent) {

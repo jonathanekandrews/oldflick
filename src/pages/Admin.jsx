@@ -21,7 +21,7 @@ export default function Admin() {
 
   const { data: allContent = [] } = useQuery({
     queryKey: ['content'],
-    queryFn: () => base44.entities.Content.list(),
+    queryFn: () => base44.entities.Content.findMany(),
   });
 
   useEffect(() => {

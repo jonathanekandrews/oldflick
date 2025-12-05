@@ -15,7 +15,7 @@ export default function ContentManagement() {
 
   const { data: allContent = [], refetch } = useQuery({
     queryKey: ['content'],
-    queryFn: () => apiClient.content.list(),
+    queryFn: () => apiClient.entities.Content.findMany(),
   });
 
   useEffect(() => {
