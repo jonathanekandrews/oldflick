@@ -23,7 +23,7 @@ export default function SignUpModal({ isOpen, onClose }) {
   ];
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="bg-gradient-to-br from-gray-900 via-black to-gray-900 border-[var(--oldflick-gold)]/30 text-white max-w-2xl p-0 overflow-hidden">
         <VisuallyHidden>
           <DialogTitle>Your Free Preview Has Ended</DialogTitle>
