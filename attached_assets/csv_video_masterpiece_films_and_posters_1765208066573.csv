@@ -1,0 +1,14 @@
+title,video_url,poster_url
+Dracula (1931),,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/2025-11-04%2019.51.45%20Dracula%20(1931%20film%20poster%20-%20St.png
+Metropolis (1927),,"https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/2025-11-04%2020.06.05%20Metropolis,%201927%20_%20Bill%20Poster.png"
+The Hunchback of Notre Dame,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/39949-the-hunchback-of-notre-dame-0-230-0-345-crop.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/39949-the-hunchback-of-notre-dame-0-230-0-345-crop.jpg
+Frankenstein (1931),https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/Frankenstein%201931%20colorized.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/Frankenstein%20(1931).png
+Nosferatu (1922),https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/Nosferatu_1922_Symphony_of_Horror_512kb.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/nosferatu-sm-web.jpg
+Phantom of the Opera (1925),https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/Phantom%20of%20the%20Opera%20Film.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/Phantom_of_the_opera_1925_poster%20V2.jpg
+Sherlock Jr (1924),https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/Sherlock%20Jr.%20Film.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/Sherlock%20Jr.%20Image.jpg
+The Kid (1921),,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/The%20Kid%201921.jpg
+The Wolf Man (1941),https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/Wolf%20Man%201941.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/The%20Wolf%20Man%20(1941).jpg
+The General (1926),https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces/TheGeneral720p.mp4,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/The_General_(1926)_-_Movie_Poster_2.png
+Pursuit to Algiers (1945),,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/Pursuit%20to%20Algiers%20(1945).jpg
+The House of Fear (1945),,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/The%20House%20of%20Fear%20(1945).jpg
+The Woman in Green (1945),,https://<your-project-id>.supabase.co/storage/v1/object/public/oldflick-images/The%20Woman%20in%20Green%20(1945).jpg
