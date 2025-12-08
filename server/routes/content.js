@@ -1,10 +1,9 @@
-const express = require('express');
-const pool = require('../db/connection');
-const { authenticateToken, requireAdmin } = require('../middleware/auth');
+import express from 'express';
+import pool from '../db/connection.js';
+import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Get all content (with optional filters)
 router.get('/', async (req, res) => {
   try {
     const { type, genre, featured, search } = req.query;
@@ -42,7 +41,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get single content by ID
 router.get('/:id', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM content WHERE id = $1', [req.params.id]);
@@ -58,7 +56,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create content (admin only)
 router.post('/', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const {
@@ -92,7 +89,6 @@ router.post('/', authenticateToken, requireAdmin, async (req, res) => {
   }
 });
 
-// Update content (admin only)
 router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -122,7 +118,6 @@ router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   }
 });
 
-// Delete content (admin only)
 router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const result = await pool.query('DELETE FROM content WHERE id = $1 RETURNING *', [req.params.id]);
@@ -138,4 +133,4 @@ router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -26,7 +26,7 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev"
+args = "node server/index.js & vite --host 0.0.0.0 --port 5000"
 waitForPort = 5000
 
 [[ports]]
@@ -34,22 +34,22 @@ localPort = 3000
 externalPort = 3002
 
 [[ports]]
+localPort = 3001
+externalPort = 4200
+
+[[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 5001
-externalPort = 3003
-
-[[ports]]
-localPort = 35785
-externalPort = 3000
 
 [[ports]]
 localPort = 41401
 externalPort = 3001
 
+[[ports]]
+localPort = 43357
+externalPort = 3000
+
 [deployment]
 deploymentTarget = "autoscale"
-run = ["npx", "vite", "preview", "--host", "0.0.0.0", "--port", "5000"]
+run = ["node", "server/index.js"]
 build = ["npm", "run", "build"]

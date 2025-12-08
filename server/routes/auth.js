@@ -1,11 +1,10 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const pool = require('../db/connection');
-const { generateToken, authenticateToken } = require('../middleware/auth');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import pool from '../db/connection.js';
+import { generateToken, authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Register new user
 router.post('/register', async (req, res) => {
   try {
     const { email, password, full_name } = req.body;
@@ -14,16 +13,13 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Email and password required' });
     }
 
-    // Check if user exists
     const existingUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (existingUser.rows.length > 0) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
-    // Hash password
     const password_hash = await bcrypt.hash(password, 10);
 
-    // Create user
     const result = await pool.query(
       `INSERT INTO users (email, password_hash, full_name) 
        VALUES ($1, $2, $3) 
@@ -41,7 +37,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -50,7 +45,6 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password required' });
     }
 
-    // Find user
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -58,13 +52,11 @@ router.post('/login', async (req, res) => {
 
     const user = result.rows[0];
 
-    // Verify password
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Remove password hash from response
     delete user.password_hash;
 
     const token = generateToken(user);
@@ -75,7 +67,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Get current user (me)
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(
@@ -94,7 +85,6 @@ router.get('/me', authenticateToken, async (req, res) => {
   }
 });
 
-// Update current user
 router.put('/me', authenticateToken, async (req, res) => {
   try {
     const { full_name, subscription_status, subscription_start_date, subscription_end_date, free_trial_used } = req.body;
@@ -146,4 +136,4 @@ router.put('/me', authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

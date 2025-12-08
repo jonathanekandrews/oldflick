@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-production';
 
-// Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -20,7 +19,6 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// Middleware to check if user is admin
 const requireAdmin = (req, res, next) => {
   if (req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Admin access required' });
@@ -28,7 +26,6 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
-// Generate JWT token
 const generateToken = (user) => {
   return jwt.sign(
     { 
@@ -41,7 +38,7 @@ const generateToken = (user) => {
   );
 };
 
-module.exports = {
+export {
   authenticateToken,
   requireAdmin,
   generateToken,

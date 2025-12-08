@@ -3,7 +3,7 @@
 ## Overview
 Oldflick is a self-hosted classic films and TV streaming platform. The app features a React + Vite frontend with Express.js + PostgreSQL backend, using Supabase for video/image file storage.
 
-**Current Status:** Live at https://oldflick.com with custom domain
+**Current Status:** Development server running
 **Created:** November 7, 2025
 **Migrated to Self-Hosted:** November 8, 2025
 **Framework:** React 18.2 + Vite 6.4.1 (Frontend) + Express.js (Backend)
@@ -14,7 +14,7 @@ Oldflick is a self-hosted classic films and TV streaming platform. The app featu
 
 ### Frontend Stack
 - **React 18.2**: UI library
-- **Vite 6.4.1**: Build tool and dev server
+- **Vite 6.4.1**: Build tool and dev server (Port 5000)
 - **React Router**: Client-side routing
 - **TanStack Query**: Server state management
 - **Tailwind CSS**: Styling framework
@@ -23,11 +23,11 @@ Oldflick is a self-hosted classic films and TV streaming platform. The app featu
 - **Framer Motion**: Animation library
 
 ### Backend Stack
-- **Express.js**: API server (Port 3000)
-- **PostgreSQL**: Database (Neon-hosted)
+- **Express.js**: API server (Port 3001)
+- **PostgreSQL**: Database (Neon-hosted via Replit)
 - **JWT Authentication**: Secure token-based auth
 - **Stripe Integration**: Subscription payments
-- **Supabase Storage**: Video and image file hosting
+- **ES Modules**: All server code uses ES module syntax
 
 ### Storage Architecture
 - **PostgreSQL**: All content metadata (titles, descriptions, URLs, user data)
@@ -39,28 +39,35 @@ Oldflick is a self-hosted classic films and TV streaming platform. The app featu
 ## Configuration for Replit
 
 ### Development Server
-- **Host:** 0.0.0.0 (required for Replit)
-- **Port:** 5000 (required for Replit webview)
+- **Frontend Host:** 0.0.0.0:5000 (required for Replit webview)
+- **Backend Host:** 0.0.0.0:3001 (API server)
 - **Allowed Hosts:** true (required for Replit proxy)
+
+### Module System
+Both root and server directories have `"type": "module"` in their package.json files to enable ES modules.
 
 ### Vite Configuration (`vite.config.js`)
 ```javascript
 server: {
   host: '0.0.0.0',
   port: 5000,
-  allowedHosts: true
+  allowedHosts: true,
+  proxy: {
+    '/api': 'http://localhost:3001'
+  }
 }
 ```
 
 ### Workflow
 - **Name:** dev
-- **Command:** npm run dev
+- **Command:** `node server/index.js & vite --host 0.0.0.0 --port 5000`
 - **Type:** webview (frontend application)
+- **Port:** 5000
 
 ### Deployment
 - **Type:** autoscale
 - **Build:** npm run build
-- **Run:** npx vite preview --host 0.0.0.0 --port 5000
+- **Run:** node server/index.js (serves static files from dist/)
 - **Custom Domain:** oldflick.com (verified and active)
 - **SSL:** Automatically provisioned by Replit
 
@@ -68,17 +75,25 @@ server: {
 
 ```
 /
+├── server/
+│   ├── index.js               # Express server entry (ES modules)
+│   ├── package.json           # Server module config (type: module)
+│   ├── db/
+│   │   └── connection.js      # PostgreSQL pool connection
+│   ├── middleware/
+│   │   └── auth.js            # JWT authentication middleware
+│   └── routes/
+│       ├── auth.js            # Login/register/me endpoints
+│       ├── content.js         # Content CRUD endpoints
+│       ├── stripe.js          # Stripe checkout/webhook
+│       └── user.js            # User list/watch history
 ├── src/
-│   ├── api/                    # Base44 SDK integration
-│   │   ├── base44Client.js    # Base44 client configuration
-│   │   ├── entities.js        # Content and User entities
-│   │   ├── functions.js       # Backend functions (Stripe, etc.)
-│   │   └── integrations.js    # Core integrations (LLM, email, files)
+│   ├── api/
+│   │   └── client.js          # API client for frontend
 │   ├── components/
 │   │   ├── admin/             # Admin panel components
 │   │   ├── browse/            # Browse page components
 │   │   ├── search/            # Search components
-│   │   ├── superadmin/        # Super admin components
 │   │   └── ui/                # Reusable UI components (Radix)
 │   ├── hooks/                 # Custom React hooks
 │   ├── lib/                   # Utility libraries
@@ -92,18 +107,25 @@ server: {
 │   │   ├── MyList.jsx
 │   │   ├── Pricing.jsx
 │   │   ├── Search.jsx
-│   │   ├── StripeSetup.jsx
-│   │   ├── SuperAdmin.jsx
-│   │   ├── VideoTest.jsx
 │   │   └── Watch.jsx
-│   ├── utils/                 # Utility functions
 │   ├── App.jsx                # Root app component
 │   └── main.jsx               # Entry point
-├── package.json               # Dependencies
+├── package.json               # Root dependencies (type: module)
 ├── vite.config.js             # Vite configuration
 ├── tailwind.config.js         # Tailwind configuration
 └── index.html                 # HTML entry point
 ```
+
+## Database Schema
+
+### Tables
+- **users**: id, email, password_hash, full_name, role, subscription_status, stripe_customer_id, etc.
+- **content**: id, title, description, type (movie/tv_show), year, duration, video_url, thumbnail_url, genre[], etc.
+- **user_lists**: user_id, content_id, added_date
+
+### Content Types
+- `movie`: Classic films
+- `tv_show`: Classic TV episodes
 
 ## Key Features
 
@@ -113,7 +135,7 @@ server: {
 - Personal content lists ("My List")
 - Content filtering and categorization
 - Video playback
-- User accounts
+- User accounts with JWT authentication
 - Subscription management (Stripe integration)
 
 ### Admin Features
@@ -121,10 +143,17 @@ server: {
 - User management
 - Bulk content upload
 - URL updates
-- AI enrichment for content metadata
 
-### Authentication
-The app requires Base44 authentication. Users are automatically redirected to the Base44 login page when accessing protected routes.
+### API Endpoints
+- `POST /api/auth/register` - Create new account
+- `POST /api/auth/login` - Login and get JWT token
+- `GET /api/auth/me` - Get current user
+- `GET /api/content` - List all content (with filters)
+- `GET /api/content/:id` - Get single content item
+- `POST /api/stripe/create-checkout-session` - Start subscription
+- `POST /api/stripe/webhook` - Handle Stripe events
+- `GET /api/user/my-list` - Get user's saved list
+- `POST /api/user/my-list/:contentId` - Add to list
 
 ## Running the Application
 
@@ -132,77 +161,37 @@ The app requires Base44 authentication. Users are automatically redirected to th
 ```bash
 npm run dev
 ```
-The dev server will start on http://0.0.0.0:5000
+Starts both Express server (port 3001) and Vite dev server (port 5000)
 
 ### Build
 ```bash
 npm run build
 ```
 
-### Preview Production Build
+### Production
 ```bash
-npm run preview
+node server/index.js
 ```
-
-## Dependencies
-
-### Core Dependencies
-- `@base44/sdk`: Base44 API client
-- `react` & `react-dom`: React framework
-- `react-router-dom`: Routing
-- `@tanstack/react-query`: Data fetching/caching
-- `tailwindcss`: Styling
-- Multiple `@radix-ui/*` packages: UI components
-- `lucide-react`: Icons
-- `framer-motion`: Animations
-- `zod`: Schema validation
-- `react-hook-form`: Form management
+Serves static files from dist/ and API endpoints
 
 ## Recent Changes
 
+### ES Modules Migration (December 8, 2025)
+1. ✅ Converted all server files from CommonJS to ES modules
+2. ✅ Fixed server/package.json to use "type": "module"
+3. ✅ Updated workflow to run both servers in parallel
+4. ✅ Development server now running successfully
+
 ### Custom Domain Deployment (November 8, 2025)
 1. ✅ Added custom domain oldflick.com to Replit deployment
-2. ✅ Updated Namecheap DNS records:
-   - A Record: @ → 34.111.179.208 (Replit IP)
-   - TXT Record: replit-verify=7d4583ad-7b0e-4749-b3ce-4d97247d8d47
-3. ✅ Verified oldflick.com in Base44 custom domains (for authentication)
-4. ✅ DNS propagation completed successfully
-5. ✅ Domain verified in Replit Deployments
-6. ✅ SSL certificate automatically provisioned
-7. ✅ Site now live at https://oldflick.com
+2. ✅ Updated Namecheap DNS records
+3. ✅ SSL certificate automatically provisioned
+4. ✅ Site live at https://oldflick.com
 
-### Replit Environment Setup (November 7, 2025)
-1. ✅ Installed Node.js 20 and npm dependencies
-2. ✅ Updated `vite.config.js` to bind to 0.0.0.0:5000
-3. ✅ Created `.gitignore` for Node.js projects
-4. ✅ Fixed missing `@tanstack/react-query` dependency
-5. ✅ Added `QueryClientProvider` to `App.jsx`
-6. ✅ Fixed import path in `Layout.jsx` for FilterBar component
-7. ✅ Configured workflow for Vite dev server
-8. ✅ Configured deployment settings
-
-### Code Fixes
-- **App.jsx**: Added QueryClientProvider wrapper for React Query
-- **Layout.jsx**: Fixed FilterBar import path from relative to absolute (@/components/browse/FilterBar)
-- **vite.config.js**: Added host and port configuration for Replit
-
-## Known Considerations
-
-### Base44 Service Integration
-The app connects to the Base44 service using app ID `6904bf7c50abb3485eec161d`. If the app shows authentication or 404 errors, this is expected behavior when:
-- The Base44 app has been deleted, moved, or reconfigured
-- The app subdomain has changed on Base44's side
-- Authentication credentials are not available
-
-This is not a Replit environment issue - the Vite dev server is running correctly.
-
-### Stripe Integration
-The app includes Stripe payment integration for subscriptions:
+## Stripe Integration
 - **Status:** ✅ Configured for PRODUCTION (live mode)
-- **Live Secret Key:** Configured in Base44 (November 8, 2025)
 - **Price ID:** price_1SQaIJFBv1tO0CA82u7bl2EM ($2.99/month)
-- **Webhook URL:** https://oldflick.com/api/functions/stripeWebhook
-- **Webhook Configuration:** Available at `/StripeSetup` page
+- **Webhook URL:** https://oldflick.com/api/stripe/webhook
 - **Required Webhook Events:**
   - checkout.session.completed
   - customer.subscription.created
@@ -211,12 +200,15 @@ The app includes Stripe payment integration for subscriptions:
   - invoice.paid
   - invoice.payment_failed
 
-## User Preferences
-None specified yet.
+## Environment Variables
+- `DATABASE_URL`: PostgreSQL connection string
+- `JWT_SECRET`: Secret for JWT token signing
+- `STRIPE_SECRET_KEY`: Stripe API secret key
+- `STRIPE_WEBHOOK_SECRET`: Stripe webhook signing secret
 
 ## Notes for Developers
 - Always restart the workflow after making configuration changes
-- The app uses Base44 SDK for all backend operations
-- Authentication is handled by Base44's auth system
-- All API calls require authentication
+- The server uses ES modules - use `import/export` syntax
+- JWT tokens expire after 7 days
 - The build output goes to the `dist/` directory
+- In production, Express serves static files from dist/

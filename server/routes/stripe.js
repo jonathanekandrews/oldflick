@@ -1,18 +1,16 @@
-const express = require('express');
-const Stripe = require('stripe');
-const pool = require('../db/connection');
-const { authenticateToken } = require('../middleware/auth');
+import express from 'express';
+import Stripe from 'stripe';
+import pool from '../db/connection.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Create checkout session
 router.post('/create-checkout-session', authenticateToken, async (req, res) => {
   try {
     const { priceId } = req.body;
     const userId = req.user.id;
 
-    // Get user from database
     const userResult = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
     const user = userResult.rows[0];
 
@@ -20,7 +18,6 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Get or create Stripe customer
     let customerId = user.stripe_customer_id;
     
     if (!customerId) {
@@ -30,14 +27,12 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
       });
       customerId = customer.id;
       
-      // Update user with Stripe customer ID
       await pool.query(
         'UPDATE users SET stripe_customer_id = $1 WHERE id = $2',
         [customerId, userId]
       );
     }
 
-    // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       payment_method_types: ['card'],
@@ -62,12 +57,10 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
   }
 });
 
-// Create portal session
 router.post('/create-portal-session', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Get user from database
     const userResult = await pool.query('SELECT stripe_customer_id FROM users WHERE id = $1', [userId]);
     const user = userResult.rows[0];
 
@@ -87,7 +80,6 @@ router.post('/create-portal-session', authenticateToken, async (req, res) => {
   }
 });
 
-// Stripe webhook
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
   let event;
@@ -124,7 +116,6 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         const subscription = event.data.object;
         const customerId = subscription.customer;
 
-        // Find user by Stripe customer ID
         const userResult = await pool.query(
           'SELECT id FROM users WHERE stripe_customer_id = $1',
           [customerId]
@@ -204,7 +195,6 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
         if (userResult.rows.length > 0) {
           const userId = userResult.rows[0].id;
           console.error(`Payment failed for user ${userId}`);
-          // You might want to send an email notification here
         }
         break;
       }
@@ -220,4 +210,4 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
   }
 });
 
-module.exports = router;
+export default router;
