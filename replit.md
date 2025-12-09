@@ -1,9 +1,9 @@
 # Oldflick - Self-Hosted Streaming Platform
 
 ## Overview
-Oldflick is a self-hosted classic films and TV streaming platform. The app features a React + Vite frontend with Express.js + PostgreSQL backend, using Supabase for video/image file storage.
+Oldflick is a self-hosted classic films and TV streaming platform. The app features a React + Vite frontend with Express.js + PostgreSQL backend, using Supabase for video/image file storage, and Notion integration for content marketing articles.
 
-**Current Status:** Development server running
+**Current Status:** ✅ Development server running + Articles feature complete
 **Created:** November 7, 2025
 **Migrated to Self-Hosted:** November 8, 2025
 **Framework:** React 18.2 + Vite 6.4.1 (Frontend) + Express.js (Backend)
@@ -16,7 +16,7 @@ Oldflick is a self-hosted classic films and TV streaming platform. The app featu
 - **React 18.2**: UI library
 - **Vite 6.4.1**: Build tool and dev server (Port 5000)
 - **React Router**: Client-side routing
-- **TanStack Query**: Server state management
+- **TanStack Query**: Server state management with caching (30s TTL)
 - **Tailwind CSS**: Styling framework
 - **Radix UI**: Component library
 - **Lucide React**: Icon library
@@ -25,8 +25,9 @@ Oldflick is a self-hosted classic films and TV streaming platform. The app featu
 ### Backend Stack
 - **Express.js**: API server (Port 3001)
 - **PostgreSQL**: Database (Neon-hosted via Replit)
-- **JWT Authentication**: Secure token-based auth
-- **Stripe Integration**: Subscription payments
+- **JWT Authentication**: Secure token-based auth (7-day expiry)
+- **Stripe Integration**: Subscription payments (PRODUCTION mode)
+- **Notion Client**: Content marketing via Notion database
 - **ES Modules**: All server code uses ES module syntax
 
 ### Storage Architecture
@@ -35,6 +36,7 @@ Oldflick is a self-hosted classic films and TV streaming platform. The app featu
 - **Buckets**: 
   - `oldflick-videos` (films)
   - `oldflick-television` (TV shows)
+- **Notion Database**: Articles for content marketing (via `@notionhq/client`)
 
 ## Configuration for Replit
 
@@ -86,7 +88,8 @@ server: {
 │       ├── auth.js            # Login/register/me endpoints
 │       ├── content.js         # Content CRUD endpoints
 │       ├── stripe.js          # Stripe checkout/webhook
-│       └── user.js            # User list/watch history
+│       ├── user.js            # User list/watch history
+│       └── articles.js        # Notion articles endpoints
 ├── src/
 │   ├── api/
 │   │   └── client.js          # API client for frontend
@@ -100,6 +103,7 @@ server: {
 │   ├── pages/                 # Page components/routes
 │   │   ├── Account.jsx
 │   │   ├── Admin.jsx
+│   │   ├── Articles.jsx       # NEW: Notion articles page
 │   │   ├── Browse.jsx
 │   │   ├── ClassicFilms.jsx
 │   │   ├── ClassicTV.jsx
@@ -107,6 +111,7 @@ server: {
 │   │   ├── MyList.jsx
 │   │   ├── Pricing.jsx
 │   │   ├── Search.jsx
+│   │   ├── SubTest.jsx
 │   │   └── Watch.jsx
 │   ├── App.jsx                # Root app component
 │   └── main.jsx               # Entry point
@@ -137,6 +142,7 @@ server: {
 - Video playback
 - User accounts with JWT authentication
 - Subscription management (Stripe integration)
+- Read articles from Notion database
 
 ### Admin Features
 - Content management
@@ -154,6 +160,8 @@ server: {
 - `POST /api/stripe/webhook` - Handle Stripe events
 - `GET /api/user/my-list` - Get user's saved list
 - `POST /api/user/my-list/:contentId` - Add to list
+- `GET /api/articles` - List all published articles from Notion
+- `GET /api/articles/:id` - Get single article details
 
 ## Running the Application
 
@@ -175,6 +183,19 @@ node server/index.js
 Serves static files from dist/ and API endpoints
 
 ## Recent Changes
+
+### Articles Feature Added (December 9, 2025)
+1. ✅ Notion database integration (`@notionhq/client` installed)
+2. ✅ Backend API endpoints: GET /api/articles and GET /api/articles/:id
+3. ✅ Frontend Articles page with grid UI (src/pages/Articles.jsx)
+4. ✅ Navigation links added (Articles button in header)
+5. ✅ Environment variables: NOTION_TOKEN, NOTION_DATABASE_ID
+6. ✅ Article fields: Title, Excerpt, Author, Published Date, Cover Image, Status
+
+### Import Error Fix (December 9, 2025)
+1. ✅ Fixed missing getTimeLeft export in AnonymousTimer.jsx
+2. ✅ Restored Notion client imports
+3. ✅ Frontend import resolution verified
 
 ### ES Modules Migration (December 8, 2025)
 1. ✅ Converted all server files from CommonJS to ES modules
@@ -200,11 +221,32 @@ Serves static files from dist/ and API endpoints
   - invoice.paid
   - invoice.payment_failed
 
+## Notion Integration
+- **Status:** ✅ Configured
+- **Environment Variables:**
+  - `NOTION_TOKEN`: Integration token (requires Notion workspace permission)
+  - `NOTION_DATABASE_ID`: Database containing articles
+- **Database Schema (Notion):**
+  - Title (rich_text field)
+  - Excerpt (rich_text field)
+  - Author (rich_text field)
+  - Published Date (date field)
+  - Cover Image (files field)
+  - Status (select field with "Published" option)
+
 ## Environment Variables
 - `DATABASE_URL`: PostgreSQL connection string
 - `JWT_SECRET`: Secret for JWT token signing
 - `STRIPE_SECRET_KEY`: Stripe API secret key
 - `STRIPE_WEBHOOK_SECRET`: Stripe webhook signing secret
+- `NOTION_TOKEN`: Notion integration token (for Articles)
+- `NOTION_DATABASE_ID`: Notion database ID for articles (for Articles)
+
+## Performance Optimizations
+- **API Caching:** TanStack Query with 30-second TTL
+- **Retry Logic:** Reduced from 3 to 1 attempt for faster failures
+- **State Management:** Efficient React Context + Query integration
+- **Static File Serving:** Express serves optimized Vite build in production
 
 ## Notes for Developers
 - Always restart the workflow after making configuration changes
@@ -212,3 +254,6 @@ Serves static files from dist/ and API endpoints
 - JWT tokens expire after 7 days
 - The build output goes to the `dist/` directory
 - In production, Express serves static files from dist/
+- Anonymous users get 30 minutes of free preview time
+- To re-enable the preview timer: Change `DISABLE_PREVIEW_TIMER = false` in src/components/browse/AnonymousTimer.jsx
+
