@@ -111,8 +111,8 @@ class APIClient {
 
   // Content (entities) methods
   entities = {
-    Content: {
-      findMany: async (filters = {}) => {
+    content: {
+      list: async (filters = {}) => {
         const params = new URLSearchParams();
         if (filters.type) params.append('type', filters.type);
         if (filters.genre) params.append('genre', filters.genre);
