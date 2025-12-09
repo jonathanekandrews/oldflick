@@ -7,7 +7,12 @@ const GRACE_PERIOD_MS = 30 * 60 * 1000; // 30 minutes
 const WARNING_1_MS = 25 * 60 * 1000; // 25 minutes (5 min left)
 const WARNING_2_MS = 28 * 60 * 1000; // 28 minutes (2 min left)
 
+// TO RE-ENABLE FREE PREVIEW TIMER: Change this to false
+const DISABLE_PREVIEW_TIMER = true;
+
 export default function AnonymousTimer({ user, onTimeExpired }) {
+  // Timer disabled - return nothing
+  if (DISABLE_PREVIEW_TIMER) return null;
   const [timeLeft, setTimeLeft] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
 
@@ -128,6 +133,8 @@ export const getTimeLeft = () => {
 };
 
 export const hasTimeExpired = () => {
+  // Timer disabled - never expire
+  if (DISABLE_PREVIEW_TIMER) return false;
   return getTimeLeft() <= 0;
 };
 
