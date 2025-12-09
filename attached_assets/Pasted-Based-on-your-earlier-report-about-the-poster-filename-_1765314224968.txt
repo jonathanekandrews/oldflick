@@ -1,0 +1,102 @@
+Based on your earlier report about the poster filename mismatches and the issue with images not showing in your Replit app, here are the instructions for your Replit dev to fix the poster display issue:
+
+***
+
+# **Instructions for Replit Dev: Fix Poster URL Paths**
+
+## **Problem Identified:**
+The database poster URLs don't match the **exact filenames** in Supabase storage buckets. All buckets exist, are PUBLIC, and files are uploaded, but there are filename mismatches causing 404 errors.
+
+## **Action Required:**
+Update the database `poster_url` fields to match the **exact** filenames in Supabase storage (case-sensitive, including spaces, parentheses, underscores, and file extensions).
+
+***
+
+## **📁 FILM POSTERS** (`oldflick-images` bucket)
+
+**Base URL:** `https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/`
+
+### **Correct Filenames:**
+1. `Dracula_Poster.png`
+2. `Frankenstein (1931).png`
+3. `Hunchback of Notredame_Poster.jpg`
+4. `Metropolis_Poster_02.jpg`
+5. `Nosferatu_Poster.jpg` ✅ **(Verified working)**
+6. `Phantom of the Opera_Poster.jpg`
+7. `Pursuit to Algiers (1945).jpg`
+8. `Sherlock Jr_Poster.jpg`
+9. `The General_Poster.png`
+10. `The House of Fear (1945).jpg`
+11. `The Kid_Poster.jpg`
+12. `The Wolf Man_Poster.jpg`
+13. `The Woman in Green (1945).jpg`
+
+***
+
+## **📺 TV SHOW POSTERS** (`oldflick-tv-images` bucket)
+
+**Base URL:** `https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-tv-images/`
+
+### **Correct Filenames:**
+1. `Adventures of Robin Hood_poster.png`
+2. `Andy Griffith Show_poster.webp`
+3. `Bonanza_poster.jpg`
+4. `Dragnet_poster.webp`
+5. `Flash Gordon 1954_poster.png`
+6. `Gumby Show_poster.webp`
+7. `Perry Mason_E1_poster.jpg`
+8. `Roy Rogers Show_poster.webp`
+9. `The Beverly Hillbillies (1962) - Season 1_Poster.png`
+10. `The Lone Ranger_poster.webp`
+11. `The Lucy Show_poster.webp`
+
+***
+
+## **⚠️ CRITICAL FILENAME REQUIREMENTS:**
+
+1. **Case-sensitive** - `The Wolf Man_Poster.jpg` ≠ `the wolf man_poster.jpg`
+2. **Spaces matter** - `Frankenstein (1931).png` has spaces around parentheses
+3. **Underscores matter** - `Andy Griffith Show_poster.webp` uses underscore before "poster"
+4. **File extensions vary** - Mix of `.png`, `.jpg`, `.webp`
+5. **Parentheses & special chars** - `Frankenstein (1931).png`, `The Beverly Hillbillies (1962) - Season 1_Poster.png`
+
+***
+
+## **🔧 DATABASE UPDATE SCRIPT:**
+
+Run a SQL UPDATE or use your ORM to update each content item's `poster_url` field with the exact URL format:
+
+```sql
+-- Example for Films
+UPDATE content 
+SET poster_url = 'https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/Nosferatu_Poster.jpg'
+WHERE title = 'Nosferatu';
+
+UPDATE content 
+SET poster_url = 'https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/Dracula_Poster.png'
+WHERE title = 'Dracula';
+
+-- Repeat for all 23 items with EXACT filenames
+```
+
+***
+
+## **✅ VERIFICATION:**
+
+After updating, test one URL in browser:
+```
+https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/Nosferatu_Poster.jpg
+```
+
+This should load the poster image. If it does, all others following the same pattern will work.
+
+***
+
+## **📋 NEXT STEPS:**
+
+1. Update database `poster_url` fields with exact filenames above
+2. Refresh Replit preview
+3. Posters should now display correctly
+4. If videos also need fixing, same process applies to `video_url` fields pointing to `oldflick-videos` and `oldflick-television` buckets
+
+Let me know once database is updated and I'll verify the frontend displays correctly.

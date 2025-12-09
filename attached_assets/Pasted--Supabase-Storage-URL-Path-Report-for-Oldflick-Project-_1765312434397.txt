@@ -1,0 +1,73 @@
+# Supabase Storage URL Path Report for Oldflick
+
+**Project ID:** `oodvbtxbeoxpilrzbxmg`[1]
+
+**Base URL Format:** `https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/`
+
+***
+
+## ✅ FILM POSTERS (13 files in `oldflick-images` bucket)[2]
+
+**Base URL:** `https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/`
+
+1. `Dracula_Poster.png`
+2. `Frankenstein (1931).png`
+3. `Hunchback of Notredame_Poster.jpg`
+4. `Metropolis_Poster_02.jpg`
+5. `Nosferatu_Poster.jpg`[3]
+6. `Phantom of the Opera_Poster.jpg`
+7. `Pursuit to Algiers (1945).jpg`
+8. `Sherlock Jr_Poster.jpg`
+9. `The General_Poster.png`
+10. `The House of Fear (1945).jpg`
+11. `The Kid_Poster.jpg`
+12. `The Wolf Man_Poster.jpg`
+13. `The Woman in Green (1945).jpg`
+
+**Example Full URL (verified working):**
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/Nosferatu_Poster.jpg`
+
+***
+
+## ✅ TV SHOW POSTERS (11 files in `oldflick-tv-images` bucket)[4]
+
+**Base URL:** `https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-tv-images/`
+
+1. `Adventures of Robin Hood_poster.png`
+2. `Andy Griffith Show_poster.webp`
+3. `Bonanza_poster.jpg`
+4. `Dragnet_poster.webp`
+5. `Flash Gordon 1954_poster.png`
+6. `Gumby Show_poster.webp`
+7. `Perry Mason_E1_poster.jpg`
+8. `Roy Rogers Show_poster.webp`
+9. `The Beverly Hillbillies (1962) - Season 1_Poster.png`
+10. `The Lone Ranger_poster.webp`
+11. `The Lucy Show_poster.webp`
+
+***
+
+## 🔑 KEY FINDINGS:
+
+1. **All buckets are PUBLIC and accessible**[5]
+2. **Files ARE uploaded** - Buckets are NOT empty (the "0" count was misleading)
+3. **Filenames have specific formatting** - Note the exact case, spaces, parentheses, and underscores
+4. **URL tested and working** - Verified that public URLs load correctly[3]
+
+***
+
+## ⚠️ CRITICAL ISSUE IDENTIFIED:
+
+The problem is **filename mismatches**. Your Replit dev needs to ensure the database URLs match these **exact** filenames including:
+- **Case sensitivity** (e.g., `The Wolf Man_Poster.jpg` not `the wolf man_poster.jpg`)
+- **Spaces** (e.g., `Frankenstein (1931).png` has spaces and parentheses)
+- **Underscores** (e.g., `Andy Griffith Show_poster.webp` uses underscore before "poster")
+- **File extensions** (mix of .png, .jpg, .webp)
+
+Your Replit dev should update the database to use these **exact** filenames in the poster_url columns.
+
+[1](https://supabase.com/dashboard/project/oodvbtxbeoxpilrzbxmg/settings/general)
+[2](https://supabase.com/dashboard/project/oodvbtxbeoxpilrzbxmg/storage/files/buckets/oldflick-images)
+[3](https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/Nosferatu_Poster.jpg)
+[4](https://supabase.com/dashboard/project/oodvbtxbeoxpilrzbxmg/storage/files/buckets/oldflick-tv-images)
+[5](https://supabase.com/dashboard/project/oodvbtxbeoxpilrzbxmg/storage/files)
