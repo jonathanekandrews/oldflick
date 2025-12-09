@@ -32,6 +32,7 @@ class APIClient {
     const url = `${API_URL}${endpoint}`;
     const config = {
       ...options,
+      credentials: 'include',
       headers: {
         ...this.getAuthHeaders(),
         ...options.headers,
@@ -120,31 +121,54 @@ class APIClient {
         if (filters.search) params.append('search', filters.search);
 
         const queryString = params.toString();
-        return await this.request(`/content${queryString ? '?' + queryString : ''}`);
+        const url = `/content${queryString ? '?' + queryString : ''}`;
+        const response = await fetch(`/api${url}`, {
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        return await response.json();
       },
 
       findById: async (id) => {
-        return await this.request(`/content/${id}`);
+        const response = await fetch(`/api/content/${id}`, {
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        return await response.json();
       },
 
       create: async (data) => {
-        return await this.request('/content', {
+        const response = await fetch('/api/content', {
           method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        return await response.json();
       },
 
       update: async (id, data) => {
-        return await this.request(`/content/${id}`, {
+        const response = await fetch(`/api/content/${id}`, {
           method: 'PUT',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        return await response.json();
       },
 
       delete: async (id) => {
-        return await this.request(`/content/${id}`, {
+        const response = await fetch(`/api/content/${id}`, {
           method: 'DELETE',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' }
         });
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+        return await response.json();
       },
     },
   };
