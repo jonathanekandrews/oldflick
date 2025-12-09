@@ -1,0 +1,132 @@
+Here's your comprehensive Supabase storage report for Replit:
+
+***
+
+## SUPABASE PROJECT INFORMATION
+
+**Project ID:** `oodvbtxbeoxpilrzbxmg`  
+**Status:** Active, all 4 buckets are PUBLIC and accessible
+
+***
+
+## BUCKET 1: oldflick-images (Film Posters)
+**Total Files:** 13 poster images (all in root directory)
+
+### Files:
+1. Dracula_Poster.png
+2. Frankenstein (1931).png
+3. Hunchback of Notredame_Poster.jpg
+4. Metropolis_Poster_02.jpg
+5. Nosferatu_Poster.jpg
+6. Phantom of the Opera_Poster.jpg
+7. Pursuit to Algiers (1945).jpg
+8. Sherlock Jr_Poster.jpg
+9. The General_Poster.png
+10. The House of Fear (1945).jpg
+11. The Kid_Poster.jpg
+12. The Wolf Man_Poster.jpg
+13. The Woman in Green (1945).jpg
+
+**URL Pattern:**  
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-images/{filename}`
+
+***
+
+## BUCKET 2: oldflick-tv-images (TV Show Posters)
+**Total Files:** 11 poster images (all in root directory)
+
+### Files:
+1. Adventures of Robin Hood_poster.png
+2. Andy Griffith Show_poster.webp
+3. Bonanza_poster.jpg
+4. Dragnet_poster.webp
+5. Flash Gordon 1954_poster.png
+6. Gumby Show_poster.webp
+7. Perry Mason_E1_poster.jpg
+8. Roy Rogers Show_poster.webp
+9. The Beverly Hillbillies (1962) - Season 1_Poster.png
+10. The Lone Ranger_poster.webp
+11. The Lucy Show_poster.webp
+
+**URL Pattern:**  
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-tv-images/{filename}`
+
+***
+
+## BUCKET 3: oldflick-television (TV Episodes)
+**Total Files:** 11 video files (all in root directory)
+
+### Files:
+1. Adventures of Robin Hood_S1E1_video.mp4
+2. Andy Griffith Show S3 E23_video.mp4
+3. Bonanza S2E13_video.mp4
+4. Dragnet (1951) S1E1_video.mp4
+5. Flash Gordon TV 1954 S1E6_video.mp4
+6. Gumby Show S1E1_video.mp4
+7. Perry Mason S2E6.mp4
+8. Roy Rogers Show TV 1951 S1E1_video.mp4
+9. The Beverly Hillbillies (1962) - Season 1_Pilot_Video.mp4
+10. The Lone Ranger 1949_S1E1_video (1).mp4
+11. The Lucy Show S1E1_video.mp4
+
+**URL Pattern:**  
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-television/{filename}`
+
+***
+
+## BUCKET 4: oldflick-videos (Film Content - ORGANIZED IN FOLDERS)
+**Total Folders:** 3  
+**Total Files:** 21 files across 3 folders
+
+### Folder Structure:
+
+#### **Folder 1: film_holmes_series/**
+**Files:** 3 videos
+1. Sherlock Holmes - Pursuit to Algiers (1945) _ Starring Basil Rathbone & Nigel Bruce _ HD (2).mp4
+2. Sherlock-Holmes-The-House-of-Fear-1945-S_Media_axMewHmCSaw_001_720p (1).mp4
+3. Sherlock-Holmes-The-Woman-in-Green-1945_Media_57hoEAfY5tM_001_720p (1).mp4
+
+**URL Pattern:**  
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-videos/film_holmes_series/{filename}`
+
+#### **Folder 2: film_masterpieces_images/**
+**Files:** 10 poster images
+1. dracula_poster_01.png
+2. frankenstein_poster_01.png
+3. hunchback_of_notredame_01.jpg
+4. metropolis_poster_01.png
+5. nosferatu-poster_01.jpg
+6. phantom_of_the_opera_poster_01.jpg
+7. sherlock_jr_poster_01.jpg
+8. the_general_poster_01.png
+9. the_kid_poster_01.jpg
+10. the_wolf_man_01.jpg
+
+**URL Pattern:**  
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces_images/{filename}`
+
+#### **Folder 3: film_masterpieces_video/**
+**Files:** 8 videos
+1. Dracula.mp4
+2. Frankenstein.mp4
+3. Hunchback of Notre Dame.mp4
+4. Metropolis.mp4
+5. Nosferatu.mp4
+6. The General
+7. The Kid (1921)
+8. The Wolf Man (1941)
+
+**URL Pattern:**  
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/oldflick-videos/film_masterpieces_video/{filename}`
+
+***
+
+## SUMMARY FOR REPLIT DEV
+
+**✅ Current Project ID:** `oodvbtxbeoxpilrzbxmg`  
+**✅ All 4 Buckets Confirmed:** PUBLIC and accessible  
+**✅ Total Files:** 45 files (13 film posters + 11 TV posters + 11 TV videos + 10 film images in subfolder + 3 Holmes videos in subfolder + 8 masterpiece videos in subfolder)
+
+You can now run your bulk URL update script using this project ID and the folder/file mappings above. All storage URLs should follow the pattern:
+
+`https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public/{bucket-name}/{folder-if-applicable}/{filename}`
