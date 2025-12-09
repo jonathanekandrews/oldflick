@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { apiClient as base44 } from "@/api/client";
 import { useQuery } from "@tanstack/react-query";
@@ -25,7 +24,12 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   const { data: allContent = [], isLoading } = useQuery({
     queryKey: ['content'],
-    queryFn: () => base44.entities.Content.findMany(),
+    queryFn: async () => {
+      const data = await base44.entities.content.list();
+      return data || [];
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false
   });
 
   useEffect(() => {
@@ -65,7 +69,7 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
     const urlParams = new URLSearchParams(location.search);
     const filterParam = urlParams.get('filter');
     const genreParam = urlParams.get('genre');
-    
+
     if (filterParam || genreParam) {
       setTimeout(() => {
         if (filteredContentRef.current) {
@@ -99,7 +103,7 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   const getFilteredContent = () => {
     if (!allContent || !Array.isArray(allContent)) return [];
-    
+
     let filtered = allContent.filter(c => c != null);
 
     // Apply filter bar filters
@@ -132,11 +136,11 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   const groupContentByGenre = (content) => {
     if (!content || !Array.isArray(content)) return {};
-    
+
     const genres = {};
     content.forEach(item => {
       if (!item || !item.genre || !Array.isArray(item.genre)) return;
-      
+
       item.genre.forEach(genre => {
         if (genre && typeof genre === 'string') {
           if (!genres[genre]) genres[genre] = [];

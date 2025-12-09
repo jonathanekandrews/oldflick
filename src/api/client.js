@@ -1,5 +1,9 @@
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+// Simple in-memory cache
+const cache = new Map();
+const CACHE_TTL = 30000; // 30 seconds
+
 class APIClient {
   constructor() {
     this.token = localStorage.getItem('auth_token');
@@ -70,10 +74,25 @@ class APIClient {
     },
 
     me: async () => {
-      return await this.request('/auth/me');
+      const cacheKey = 'auth:me';
+      const cached = cache.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        return cached.data;
+      }
+
+      const response = await fetch('/api/auth/me', {
+        credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Not authenticated');
+      const data = await response.json();
+
+      cache.set(cacheKey, { data, timestamp: Date.now() });
+      return data;
     },
 
     updateMe: async (updates) => {
+      // Invalidate cache for auth.me after update
+      cache.delete('auth:me');
       return await this.request('/auth/me', {
         method: 'PUT',
         body: JSON.stringify(updates),
@@ -99,7 +118,7 @@ class APIClient {
         if (filters.genre) params.append('genre', filters.genre);
         if (filters.featured) params.append('featured', 'true');
         if (filters.search) params.append('search', filters.search);
-        
+
         const queryString = params.toString();
         return await this.request(`/content${queryString ? '?' + queryString : ''}`);
       },

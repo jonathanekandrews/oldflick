@@ -123,10 +123,10 @@ export default function AnonymousTimer({ user, onTimeExpired }) {
   );
 }
 
-export const getTimeLeft = () => {
+const getTimeLeft = () => {
   const firstVisit = localStorage.getItem('oldflick_first_visit');
   if (!firstVisit) return GRACE_PERIOD_MS;
-  
+
   const elapsed = Date.now() - parseInt(firstVisit);
   const remaining = GRACE_PERIOD_MS - elapsed;
   return Math.max(0, remaining);
