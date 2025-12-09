@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { apiClient as base44 } from "@/api/client";
-import { Search, User, LogOut, Menu, X, MoreHorizontal, Crown } from "lucide-react";
+import { Search, User, LogOut, Menu, X, MoreHorizontal, Crown, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import FilterBar from "@/components/browse/FilterBar";
@@ -261,6 +261,12 @@ export default function Layout({ children, currentPageName }) {
                       Account
                     </Button>
                   </Link>
+                  <Link to={createPageUrl("Articles")}>
+                    <Button variant="ghost" size="sm" className="text-white hover:text-[var(--oldflick-gold)]">
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Articles
+                    </Button>
+                  </Link>
                   {user?.role === "admin" && (
                     <Link to={createPageUrl("Admin")}>
                       <Button variant="ghost" size="sm" className="text-white hover:text-[var(--oldflick-gold)]">
@@ -361,6 +367,13 @@ export default function Layout({ children, currentPageName }) {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     My Account
+                  </Link>
+                  <Link
+                    to={createPageUrl("Articles")}
+                    className="block text-white hover:text-[var(--oldflick-gold)] py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Articles
                   </Link>
                   {user?.role === "admin" && (
                     <Link
