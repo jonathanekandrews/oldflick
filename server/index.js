@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import contentRoutes from './routes/content.js';
 import stripeRoutes from './routes/stripe.js';
 import userRoutes from './routes/user.js';
+import articlesRoutes from './routes/articles.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/stripe', stripeRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/articles', articlesRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
