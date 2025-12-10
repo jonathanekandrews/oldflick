@@ -184,6 +184,13 @@ Serves static files from dist/ and API endpoints
 
 ## Recent Changes
 
+### Video Playback Fixed (December 10, 2025)
+1. ✅ Fixed API client: Added `credentials: 'include'` to all fetch requests
+2. ✅ Fixed Watch.jsx: Changed from non-existent `findMany()` to correct `findById()` method
+3. ✅ Added missing `createPageUrl()` function to src/lib/utils.js
+4. ✅ All content methods now use direct fetch() calls with proper credential handling
+5. ✅ Video playback now loads content from Supabase URLs correctly
+
 ### Articles Feature Added (December 9, 2025)
 1. ✅ Notion database integration (`@notionhq/client` installed)
 2. ✅ Backend API endpoints: GET /api/articles and GET /api/articles/:id

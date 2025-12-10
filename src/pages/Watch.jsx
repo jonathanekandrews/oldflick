@@ -100,8 +100,7 @@ export default function Watch() {
         return;
       }
 
-      const allContent = await base44.entities.Content.findMany();
-      const foundContent = allContent.find(c => c.id === contentId);
+      const foundContent = await base44.entities.content.findById(contentId);
       
       if (!foundContent) {
         navigate(createPageUrl("Browse"));
