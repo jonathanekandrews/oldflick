@@ -69,9 +69,12 @@ server: {
 ### Deployment
 - **Type:** autoscale
 - **Build:** npm run build
-- **Run:** node server/index.js (serves static files from dist/)
+- **Run:** bash -c "NODE_ENV=production node server/index.js"
+- **Port:** 5000 (configured automatically in production)
 - **Custom Domain:** oldflick.com (verified and active)
 - **SSL:** Automatically provisioned by Replit
+- **Frontend:** Static files served from dist/
+- **Backend API:** Express running on same port with /api/* routing
 
 ## Project Structure
 

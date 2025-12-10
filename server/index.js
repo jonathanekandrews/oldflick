@@ -13,7 +13,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || (process.env.NODE_ENV === 'production' ? 5000 : 3001);
+const PORT = process.env.NODE_ENV === 'production' ? 5000 : (process.env.API_PORT || 3001);
 const isDev = process.env.NODE_ENV !== 'production';
 
 app.use(cors({
@@ -38,9 +38,11 @@ app.get('/api/health', (req, res) => {
 
 if (!isDev) {
   app.use(express.static(path.join(__dirname, '../dist')));
-  app.get('/*', (req, res) => {
+  app.all('*', (req, res, next) => {
     if (!req.path.startsWith('/api')) {
       res.sendFile(path.join(__dirname, '../dist/index.html'));
+    } else {
+      next();
     }
   });
 }
