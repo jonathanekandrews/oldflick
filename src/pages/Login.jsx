@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import SuccessModal from '@/components/browse/SuccessModal';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -28,10 +30,14 @@ export default function Login() {
     try {
       if (isLogin) {
         await apiClient.auth.login(formData.email, formData.password);
+        navigate(returnUrl);
       } else {
         await apiClient.auth.register(formData.email, formData.password, formData.full_name);
+        setShowSuccess(true);
+        setTimeout(() => {
+          navigate(returnUrl);
+        }, 2500);
       }
-      navigate(returnUrl);
     } catch (err) {
       setError(err.message || 'Authentication failed');
     } finally {
@@ -44,8 +50,14 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center oldflick-gradient px-4">
-      <Card className="w-full max-w-md bg-white/5 border-white/10">
+    <>
+      <SuccessModal 
+        isOpen={showSuccess} 
+        onClose={() => setShowSuccess(false)}
+        message="Account created successfully!"
+      />
+      <div className="min-h-screen flex items-center justify-center oldflick-gradient px-4">
+        <Card className="w-full max-w-md bg-white/5 border-white/10">
         <CardHeader>
           <CardTitle className="text-white text-2xl text-center">
             {isLogin ? 'Welcome Back' : 'Create Account'}
@@ -119,6 +131,7 @@ export default function Login() {
           </form>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </>
   );
 }
