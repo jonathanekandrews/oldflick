@@ -38,7 +38,7 @@ app.get('/api/health', (req, res) => {
 
 if (!isDev) {
   app.use(express.static(path.join(__dirname, '../dist')));
-  app.all('*', (req, res, next) => {
+  app.use((req, res, next) => {
     if (!req.path.startsWith('/api')) {
       res.sendFile(path.join(__dirname, '../dist/index.html'));
     } else {
