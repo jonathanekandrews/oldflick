@@ -15,9 +15,8 @@ import {
 import { X } from "lucide-react";
 
 const GENRES = [
-  "Action", "Adventure", "Comedy", "Crime", "Cult", "Drama", "Film Noir", 
-  "Horror", "Masterpieces", "Musical", "Mystery", "Romance", "Science Fiction", 
-  "Thriller", "War", "Western"
+  "Comedy", "Crime & Mystery", "Drama", "Horror", "Musical", 
+  "Romance", "Sci-Fi", "Thriller", "War", "Western"
 ];
 
 export default function ContentForm({ content, onSubmit, onCancel, isSubmitting }) {
@@ -31,7 +30,7 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
     backdrop_url: "",
     video_url: "",
     trailer_url: "",
-    genre: [],
+    genre: "",
     rating: "",
     imdb_rating: 0,
     cast: [],
@@ -42,7 +41,6 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
   });
 
   const [newCast, setNewCast] = useState("");
-  const [newGenre, setNewGenre] = useState("");
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -57,16 +55,6 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
 
   const removeCast = (index) => {
     handleChange("cast", formData.cast.filter((_, i) => i !== index));
-  };
-
-  const addGenre = (genre) => {
-    if (genre && !formData.genre?.includes(genre)) {
-      handleChange("genre", [...(formData.genre || []), genre]);
-    }
-  };
-
-  const removeGenre = (genre) => {
-    handleChange("genre", formData.genre.filter(g => g !== genre));
   };
 
   const handleSubmit = (e) => {
@@ -266,30 +254,13 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
           </div>
 
           <div className="space-y-2">
-            <Label className="text-white">Genres</Label>
-            <div className="flex flex-wrap gap-2 mb-2">
-              {formData.genre?.map(genre => (
-                <span
-                  key={genre}
-                  className="px-3 py-1 bg-[var(--oldflick-burgundy)] text-white rounded-full text-sm flex items-center gap-2"
-                >
-                  {genre}
-                  <button
-                    type="button"
-                    onClick={() => removeGenre(genre)}
-                    className="hover:text-gray-300"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
-            </div>
-            <Select onValueChange={addGenre}>
+            <Label htmlFor="genre" className="text-white">Primary Genre *</Label>
+            <Select value={formData.genre} onValueChange={(value) => handleChange("genre", value)}>
               <SelectTrigger className="bg-white/10 border-white/20 text-white">
-                <SelectValue placeholder="Add genre..." />
+                <SelectValue placeholder="Select genre..." />
               </SelectTrigger>
               <SelectContent>
-                {GENRES.filter(g => !formData.genre?.includes(g)).map(genre => (
+                {GENRES.map(genre => (
                   <SelectItem key={genre} value={genre}>{genre}</SelectItem>
                 ))}
               </SelectContent>

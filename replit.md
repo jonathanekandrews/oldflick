@@ -187,6 +187,29 @@ Serves static files from dist/ and API endpoints
 
 ## Recent Changes
 
+### Genre System Restructured (December 11, 2025)
+1. ✅ **Reduced genres from 16 to 9** - Removed: Action, Adventure, Film Noir, Masterpieces, Cult
+2. ✅ **Combined genres:** Crime & Mystery (paired), Drama & Musical (separate per best practices)
+3. ✅ **Schema migrated:** genre column changed from ARRAY to VARCHAR (single primary genre per item)
+4. ✅ **Admin form updated:** Multi-select dropdown → Single select dropdown
+5. ✅ **Backend simplified:** Genre filtering changed from `ANY(genre)` to simple equality `=`
+6. ✅ **All 23 films recategorized:** Research-backed genre assignments using critical sources (IMDb/Criterion)
+
+**New Genre List (9 total):**
+- Comedy, Crime & Mystery, Drama, Horror, Musical, Romance, Sci-Fi, Thriller, War, Western
+
+**Why this approach:**
+- Clarity: Each film has ONE primary genre (no ambiguity)
+- Consistency: All films follow same standard
+- Industry-aligned: Matches Netflix, Criterion, TCM categorization practices
+- Performance: Faster queries (simple `=` vs `ANY()`)
+- Admin UX: Simpler form (single select vs multi-select)
+
+**Migration Details:**
+- Removed redundant curation flags from genre field (kept `is_masterpiece` and `is_cult` booleans for collections)
+- Recategorized based on critical characterization (Sherlock Holmes → Crime & Mystery, Metropolis → Sci-Fi, etc.)
+- All 23 content items successfully migrated and verified
+
 ### Video Playback Fixed (December 10, 2025)
 1. ✅ Fixed API client: Added `credentials: 'include'` to all fetch requests
 2. ✅ Fixed Watch.jsx: Changed from non-existent `findMany()` to correct `findById()` method

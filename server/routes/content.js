@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     }
 
     if (genre) {
-      query += ` AND $${paramCount++} = ANY(genre)`;
+      query += ` AND genre = $${paramCount++}`;
       params.push(genre);
     }
 
