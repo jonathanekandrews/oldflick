@@ -69,13 +69,19 @@ jobs:
         with:
           name: production-build
       
-      # Step 2: Deploy to Digital Ocean App Platform
+      # Step 2: Deploy to Digital Ocean Droplet via SSH
       - name: Deploy to Digital Ocean
-        uses: digitalocean/app_action@v1.1.6
+        uses: appleboy/ssh-action@master
         with:
-          app_name: ${{ env.APP_NAME }}
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd ~/apps/oldflick
+            git pull origin production
+            npm install
+            npm run build
+            pm2 restart oldflick
       # Step 3: Post-deployment notification (optional)
       - name: Deployment successful
         run: |
