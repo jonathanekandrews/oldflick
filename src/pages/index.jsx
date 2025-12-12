@@ -91,41 +91,39 @@ function PagesContent() {
     return (
         <Layout currentPageName={currentPage}>
             <Routes>            
-                
                 <Route path="/" element={<Browse />} />
-                
+                <Route path="/login" element={<Login />} />
                 <Route path="/Login" element={<Login />} />
-                
+                <Route path="/browse" element={<Browse />} />
                 <Route path="/Browse" element={<Browse />} />
-                
+                <Route path="/watch" element={<Watch />} />
                 <Route path="/Watch" element={<Watch />} />
-                
+                <Route path="/search" element={<Search />} />
                 <Route path="/Search" element={<Search />} />
-                
+                <Route path="/account" element={<Account />} />
                 <Route path="/Account" element={<Account />} />
-                
+                <Route path="/admin" element={<Admin />} />
                 <Route path="/Admin" element={<Admin />} />
-                
+                <Route path="/superadmin" element={<SuperAdmin />} />
                 <Route path="/SuperAdmin" element={<SuperAdmin />} />
-                
+                <Route path="/videotest" element={<VideoTest />} />
                 <Route path="/VideoTest" element={<VideoTest />} />
-                
+                <Route path="/pricing" element={<Pricing />} />
                 <Route path="/Pricing" element={<Pricing />} />
-                
+                <Route path="/stripesetup" element={<StripeSetup />} />
                 <Route path="/StripeSetup" element={<StripeSetup />} />
-                
+                <Route path="/mylist" element={<MyList />} />
                 <Route path="/MyList" element={<MyList />} />
-                
+                <Route path="/classicfilms" element={<ClassicFilms />} />
                 <Route path="/ClassicFilms" element={<ClassicFilms />} />
-                
+                <Route path="/classictv" element={<ClassicTV />} />
                 <Route path="/ClassicTV" element={<ClassicTV />} />
-                
+                <Route path="/subtest" element={<SubTest />} />
                 <Route path="/SubTest" element={<SubTest />} />
-                
+                <Route path="/contentmanagement" element={<ContentManagement />} />
                 <Route path="/ContentManagement" element={<ContentManagement />} />
-                
+                <Route path="/articles" element={<Articles />} />
                 <Route path="/Articles" element={<Articles />} />
-                
             </Routes>
         </Layout>
     );
