@@ -1,0 +1,83 @@
+name: Deploy to Digital Ocean Production
+
+# This workflow triggers on pushes to the production branch
+on:
+  push:
+    branches:
+      - production
+
+# Environment variables available to all jobs
+env:
+  NODE_VERSION: '18'
+  APP_NAME: oldflick-production
+
+jobs:
+  # Job 1: Build and Test
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      # Step 2: Set up Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      
+      # Step 4: Run linting (if you have eslint configured)
+      - name: Run linter
+        run: npm run lint --if-present
+        continue-on-error: true
+      
+      # Step 5: Run tests (if you have tests)
+      - name: Run tests
+        run: npm test --if-present
+        continue-on-error: true
+      
+      # Step 6: Build the application
+      - name: Build application
+        run: npm run build
+      
+      # Step 7: Upload build artifacts for deployment job
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          path: dist/
+          retention-days: 1
+
+  # Job 2: Deploy to Digital Ocean
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://oldflick.com
+    
+    steps:
+      # Step 1: Download build artifacts from previous job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: production-build
+      
+      # Step 2: Deploy to Digital Ocean App Platform
+      - name: Deploy to Digital Ocean
+        uses: digitalocean/app_action@v1.1.6
+        with:
+          app_name: ${{ env.APP_NAME }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      # Step 3: Post-deployment notification (optional)
+      - name: Deployment successful
+        run: |
+          echo "✅ Deployment to production completed successfully!"
+          echo "App URL: https://oldflick.com"
