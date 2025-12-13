@@ -109,10 +109,10 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
     // Apply filter bar filters
     switch (activeFilter) {
       case "classic_films":
-        filtered = filtered.filter(c => c && c.type === "movie");
+        filtered = filtered.filter(c => c && c.content_type === "film");
         break;
       case "classic_tv":
-        filtered = filtered.filter(c => c && c.type === "tv_show");
+        filtered = filtered.filter(c => c && c.content_type === "tv");
         break;
       case "my_list":
         if (user && user.favorite_content && Array.isArray(user.favorite_content)) {
@@ -153,8 +153,8 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   const filteredContent = getFilteredContent();
   const contentByType = {
-    movies: filteredContent.filter(c => c && c.type === "movie"),
-    tvShows: filteredContent.filter(c => c && c.type === "tv_show"),
+    movies: filteredContent.filter(c => c && c.content_type === "film"),
+    tvShows: filteredContent.filter(c => c && c.content_type === "tv"),
   };
   const genreGroups = groupContentByGenre(filteredContent);
 

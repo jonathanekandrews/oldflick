@@ -46,7 +46,7 @@ export default function HeroSection({ content, user, hasActiveSubscription }) {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src={content.backdrop_url || content.thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920"}
+          src={content.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920"}
           alt={content.title || "Content backdrop"}
           className="w-full h-full object-cover"
         />
@@ -64,19 +64,19 @@ export default function HeroSection({ content, user, hasActiveSubscription }) {
 
           {/* Metadata */}
           <div className="flex flex-wrap items-center gap-4 text-sm mb-6 text-white">
-            {content.year && (
-              <span className="text-[var(--oldflick-gold)] font-semibold">{content.year}</span>
+            {content.release_year && (
+              <span className="text-[var(--oldflick-gold)] font-semibold">{content.release_year}</span>
             )}
-            {content.rating && (
+            {content.content_type && (
               <span className="px-2 py-1 border border-gray-400 rounded text-sm text-white">
-                {content.rating}
+                {content.content_type === 'tv' ? 'TV' : 'Film'}
               </span>
             )}
-            {content.duration && <span className="text-gray-300">{content.duration}</span>}
-            {content.imdb_rating && (
+            {content.runtime_minutes && <span className="text-gray-300">{content.runtime_minutes} min</span>}
+            {content.rating && (
               <span className="flex items-center gap-1 text-white">
                 <span className="text-yellow-500">★</span>
-                <span>{content.imdb_rating}/10</span>
+                <span>{content.rating}/10</span>
               </span>
             )}
           </div>

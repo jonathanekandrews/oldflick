@@ -23,20 +23,20 @@ export default function ContentRow({ title, content, user }) {
             >
               <div className="relative aspect-[2/3] rounded-lg overflow-hidden content-card-hover">
                 <img
-                  src={item.thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400"}
+                  src={item.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400"}
                   alt={item.title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <h3 className="font-semibold text-sm mb-1 line-clamp-2">{item.title}</h3>
-                    {item.year && (
-                      <p className="text-xs text-gray-300">{item.year}</p>
+                    {item.release_year && (
+                      <p className="text-xs text-gray-300">{item.release_year}</p>
                     )}
-                    {item.imdb_rating && (
+                    {item.rating && (
                       <div className="flex items-center gap-1 mt-2">
                         <span className="text-yellow-500 text-xs">★</span>
-                        <span className="text-xs">{item.imdb_rating}</span>
+                        <span className="text-xs">{item.rating}</span>
                       </div>
                     )}
                   </div>

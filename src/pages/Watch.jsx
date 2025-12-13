@@ -263,7 +263,7 @@ export default function Watch() {
               ref={videoRef}
               className="w-full h-full bg-black"
               src={content.video_url}
-              poster={content.backdrop_url || content.thumbnail_url}
+              poster={content.poster_url}
               controls={canWatch}
               controlsList="nodownload"
               preload="metadata"
@@ -343,17 +343,17 @@ export default function Watch() {
               {content.title}
             </h1>
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-4">
-              {content.year && <span>{content.year}</span>}
-              {content.rating && (
+              {content.release_year && <span>{content.release_year}</span>}
+              {content.content_type && (
                 <span className="px-2 py-0.5 border border-gray-600 rounded text-sm">
-                  {content.rating}
+                  {content.content_type === 'tv' ? 'TV' : 'Film'}
                 </span>
               )}
-              {content.duration && <span>{content.duration}</span>}
-              {content.imdb_rating && (
+              {content.runtime_minutes && <span>{content.runtime_minutes} min</span>}
+              {content.rating && (
                 <span className="flex items-center gap-1">
                   <span className="text-yellow-500">★</span>
-                  <span className="text-white">{content.imdb_rating}/10</span>
+                  <span className="text-white">{content.rating}/10</span>
                 </span>
               )}
             </div>

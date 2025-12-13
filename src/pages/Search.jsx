@@ -83,8 +83,8 @@ export default function Search() {
     }
 
     // Year filter
-    if (yearFilter !== "all" && content.year) {
-      const decade = Math.floor(content.year / 10) * 10;
+    if (yearFilter !== "all" && content.release_year) {
+      const decade = Math.floor(content.release_year / 10) * 10;
       const decadeStr = `${decade}s`;
       if (decadeStr !== yearFilter) {
         return false;

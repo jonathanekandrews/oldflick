@@ -42,9 +42,7 @@ export default function BulkURLUpdateModal({ content, onClose, onComplete }) {
       old_video_url: item.video_url,
       new_video_url: item.video_url?.replace(new RegExp(findPattern, 'g'), replacePattern),
       old_thumbnail_url: item.thumbnail_url,
-      new_thumbnail_url: item.thumbnail_url?.replace(new RegExp(findPattern, 'g'), replacePattern),
-      old_backdrop_url: item.backdrop_url,
-      new_backdrop_url: item.backdrop_url?.replace(new RegExp(findPattern, 'g'), replacePattern),
+      new_poster_url: item.poster_url?.replace(new RegExp(findPattern, 'g'), replacePattern),
     }));
 
     setPreview(previewData);
@@ -69,22 +67,18 @@ export default function BulkURLUpdateModal({ content, onClose, onComplete }) {
       for (const item of content) {
         const needsUpdate = (
           item.video_url?.includes(findPattern) ||
-          item.thumbnail_url?.includes(findPattern) ||
-          item.backdrop_url?.includes(findPattern)
+          item.poster_url?.includes(findPattern)
         );
 
         if (needsUpdate) {
           try {
             const updates = {};
-            
+
             if (item.video_url?.includes(findPattern)) {
               updates.video_url = item.video_url.replace(new RegExp(findPattern, 'g'), replacePattern);
             }
-            if (item.thumbnail_url?.includes(findPattern)) {
-              updates.thumbnail_url = item.thumbnail_url.replace(new RegExp(findPattern, 'g'), replacePattern);
-            }
-            if (item.backdrop_url?.includes(findPattern)) {
-              updates.backdrop_url = item.backdrop_url.replace(new RegExp(findPattern, 'g'), replacePattern);
+            if (item.poster_url?.includes(findPattern)) {
+              updates.poster_url = item.poster_url.replace(new RegExp(findPattern, 'g'), replacePattern);
             }
 
             await base44.entities.Content.update(item.id, updates);
