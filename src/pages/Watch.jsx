@@ -43,6 +43,8 @@ export default function Watch() {
       setShowAd(false);
       // Check if anonymous user has time left
       checkWatchPermission();
+      // Auto-play and fullscreen after countdown ends
+      handleAutoPlayAndFullscreen();
     }
   }, [showAd, adCountdown]);
 
@@ -134,6 +136,7 @@ export default function Watch() {
       console.error("Error loading content:", error);
       // Don't redirect to login, just show sign up modal after 30 min (handled by checkWatchPermission)
       // This catch is for general errors during data loading (e.g., content fetch failed).
+      setLoading(false);
     }
   };
 
@@ -186,6 +189,33 @@ export default function Watch() {
     setIsFavorite(!isFavorite);
   };
 
+  const handleAutoPlayAndFullscreen = () => {
+    // Small delay to ensure video element is rendered and DOM updated
+    setTimeout(() => {
+      if (videoRef.current && canWatch) {
+        // Request fullscreen first
+        videoRef.current.requestFullscreen().catch(err => {
+          console.log("Fullscreen request failed (may be restricted):", err.message);
+          // Continue with autoplay even if fullscreen fails
+        });
+
+        // Auto-play the video
+        videoRef.current.play().catch(err => {
+          console.log("Auto-play blocked by browser:", err.message);
+          // Browser may restrict autoplay - graceful fallback to manual play
+        });
+      }
+    }, 100);
+  };
+
+  const handleSkipCountdown = () => {
+    setShowAd(false);
+    setAdCountdown(0);
+    checkWatchPermission();
+    // Trigger auto-play and fullscreen immediately
+    handleAutoPlayAndFullscreen();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -194,18 +224,21 @@ export default function Watch() {
     );
   }
 
+  // Check if video URL is available
+  const hasVideo = content && content.video_url;
+
   return (
     <div className="min-h-screen bg-black">
       {/* Sign Up Modal */}
-      <SignUpModal 
-        isOpen={showSignUpModal} 
+      <SignUpModal
+        isOpen={showSignUpModal}
         onClose={() => {
           setShowSignUpModal(false);
           // If the user closes the sign-up modal after time expiry, navigate them away
           if (!canWatch) {
             navigate(createPageUrl("Browse"));
           }
-        }} 
+        }}
       />
 
       {/* Codec Warning Modal */}
@@ -239,8 +272,33 @@ export default function Watch() {
       </Dialog>
 
       <div className="relative w-full aspect-video bg-black">
-        {showAd ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-black">
+        {!hasVideo ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black">
+            <div className="text-center max-w-md px-4">
+              <div className="mb-6">
+                <img
+                  src={content.poster_url}
+                  alt={content.title}
+                  className="w-32 h-48 mx-auto object-cover rounded-lg shadow-2xl opacity-70"
+                />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-4">Coming Soon</h2>
+              <p className="text-gray-300 mb-6">
+                This content is not yet available for streaming. Please check back later.
+              </p>
+              <Button
+                className="bg-[var(--oldflick-gold)] text-black hover:bg-[var(--oldflick-gold)]/90 font-semibold"
+                onClick={() => navigate(createPageUrl("Browse"))}
+              >
+                Back to Browse
+              </Button>
+            </div>
+          </div>
+        ) : showAd ? (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-black cursor-pointer hover:bg-black/80 transition-colors"
+            onClick={handleSkipCountdown}
+          >
             <div className="text-center">
               <div className="mb-8">
                 <div className="inline-block p-8 bg-white/10 backdrop-blur-sm rounded-2xl">
@@ -253,7 +311,7 @@ export default function Watch() {
                 Your video will begin in <span className="text-white font-semibold">{adCountdown}</span> seconds
               </p>
               <p className="text-sm text-gray-500 mt-4">
-                Buffering content... Please wait
+                Click anywhere to start now
               </p>
             </div>
           </div>
@@ -378,13 +436,13 @@ export default function Watch() {
               {content.description}
             </p>
 
-            {content.genre && content.genre.length > 0 && (
+            {content.genre && (
               <div className="mb-6">
-                <h3 className="text-sm font-semibold text-gray-400 mb-2">GENRES</h3>
+                <h3 className="text-sm font-semibold text-gray-400 mb-2">GENRE</h3>
                 <div className="flex flex-wrap gap-2">
-                  {content.genre.map(genre => (
+                  {(typeof content.genre === 'string' ? [content.genre] : Array.isArray(content.genre) ? content.genre : []).map((genre, idx) => (
                     <span
-                      key={genre}
+                      key={idx}
                       className="px-3 py-1 bg-white/10 rounded-full text-sm text-white"
                     >
                       {genre}
@@ -396,11 +454,11 @@ export default function Watch() {
           </div>
 
           <div className="space-y-6">
-            {content.cast && content.cast.length > 0 && (
+            {content.actors && (
               <div>
                 <h3 className="text-sm font-semibold text-gray-400 mb-2">CAST</h3>
                 <p className="text-gray-300 text-sm">
-                  {content.cast.join(", ")}
+                  {typeof content.actors === 'string' ? content.actors : Array.isArray(content.actors) ? content.actors.join(", ") : ""}
                 </p>
               </div>
             )}

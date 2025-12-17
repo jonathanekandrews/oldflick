@@ -49,7 +49,7 @@ export default function ClassicFilms() {
     }
   };
 
-  const movies = allContent.filter(c => c.type === "movie");
+  const movies = allContent.filter(c => c.content_type === "film");
   
   const groupByGenre = () => {
     const grouped = {};

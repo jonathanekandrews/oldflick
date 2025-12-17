@@ -48,7 +48,7 @@ export default function ClassicTV() {
     }
   };
 
-  const tvShows = allContent.filter(c => c.type === "tv_show");
+  const tvShows = allContent.filter(c => c.content_type === "tv");
   
   const groupByGenre = () => {
     const grouped = {};

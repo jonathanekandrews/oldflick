@@ -6,15 +6,15 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const { type, genre, featured, search } = req.query;
-    
+    const { content_type, genre, featured, search } = req.query;
+
     let query = 'SELECT * FROM content WHERE 1=1';
     const params = [];
     let paramCount = 1;
 
-    if (type) {
-      query += ` AND type = $${paramCount++}`;
-      params.push(type);
+    if (content_type) {
+      query += ` AND content_type = $${paramCount++}`;
+      params.push(content_type);
     }
 
     if (genre) {
@@ -59,26 +59,23 @@ router.get('/:id', async (req, res) => {
 router.post('/', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const {
-      title, description, type, year, duration, thumbnail_url, backdrop_url,
-      video_url, trailer_url, genre, rating, imdb_rating, cast_members, director,
-      is_featured, is_masterpiece, is_cult
+      title, description, content_type, release_year, runtime_minutes, poster_url,
+      video_url, genre, rating, actors, director
     } = req.body;
 
-    if (!title || !type) {
-      return res.status(400).json({ error: 'Title and type are required' });
+    if (!title || !content_type) {
+      return res.status(400).json({ error: 'Title and content_type are required' });
     }
 
     const result = await pool.query(
       `INSERT INTO content (
-        title, description, type, year, duration, thumbnail_url, backdrop_url,
-        video_url, trailer_url, genre, rating, imdb_rating, cast_members, director,
-        is_featured, is_masterpiece, is_cult
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+        title, description, content_type, release_year, runtime_minutes, poster_url,
+        video_url, genre, rating, actors, director
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
       RETURNING *`,
       [
-        title, description, type, year, duration, thumbnail_url, backdrop_url,
-        video_url, trailer_url, genre, rating, imdb_rating, cast_members, director,
-        is_featured || false, is_masterpiece || false, is_cult || false
+        title, description, content_type, release_year, runtime_minutes, poster_url,
+        video_url, genre, rating, actors, director
       ]
     );
 

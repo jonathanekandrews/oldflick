@@ -76,12 +76,12 @@ export default function ContentTable({ content, isLoading, onEdit, onDelete, onE
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      {item.type === "movie" ? (
+                      {item.content_type === "film" ? (
                         <Film className="w-4 h-4 text-blue-500" />
                       ) : (
                         <Tv className="w-4 h-4 text-purple-500" />
                       )}
-                      <span className="text-white capitalize">{item.type?.replace("_", " ")}</span>
+                      <span className="text-white capitalize">{item.content_type === "film" ? "Film" : "TV"}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-white">{item.release_year}</td>

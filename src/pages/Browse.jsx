@@ -38,10 +38,13 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   useEffect(() => {
     if (allContent && allContent.length > 0) {
-      const validContent = allContent.filter(c => c != null);
-      const featured = validContent.find(c => c.is_featured === true) || validContent[0];
-      if (featured) {
-        setFeaturedContent(featured);
+      // Filter for valid content with actual videos
+      const validContent = allContent.filter(c => c != null && c.video_url != null && c.video_url !== '');
+
+      if (validContent.length > 0) {
+        // Random selection on each page load
+        const randomIndex = Math.floor(Math.random() * validContent.length);
+        setFeaturedContent(validContent[randomIndex]);
       }
     }
   }, [allContent]);

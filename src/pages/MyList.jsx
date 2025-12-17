@@ -60,8 +60,8 @@ export default function MyList() {
   
   const stats = {
     total: favoriteContent.length,
-    movies: favoriteContent.filter(c => c.type === "movie").length,
-    tvShows: favoriteContent.filter(c => c.type === "tv_show").length,
+    movies: favoriteContent.filter(c => c.content_type === "film").length,
+    tvShows: favoriteContent.filter(c => c.content_type === "tv").length,
   };
 
   return (

@@ -17,8 +17,8 @@ const PORT = process.env.NODE_ENV === 'production' ? 5000 : (process.env.API_POR
 const isDev = process.env.NODE_ENV !== 'production';
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://oldflick.com']
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://oldflick.com', 'https://staging.oldflick.com', 'https://www.oldflick.com']
     : true,
   credentials: true
 }));

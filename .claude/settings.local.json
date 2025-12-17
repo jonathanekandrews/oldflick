@@ -10,7 +10,11 @@
       "Bash(timeout 5 bash -c \"</dev/tcp/db.oodvbtxbeoxpilrzbxmg.supabase.co/5432\")",
       "Bash(node:*)",
       "Bash(timeout 30 npm run dev:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(wc -l echo \"films found\" curl -s http://localhost:3001/api/content?content_type=tv)",
+      "Bash(timeout 30 node:*)",
+      "Bash(timeout 60 node:*)",
+      "Bash(psql:*)"
     ]
   }
 }

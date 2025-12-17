@@ -127,8 +127,8 @@ export default function SuperAdmin() {
 
   const stats = {
     total: allContent.length,
-    movies: allContent.filter(c => c.type === "movie").length,
-    tvShows: allContent.filter(c => c.type === "tv_show").length,
+    movies: allContent.filter(c => c.content_type === "film").length,
+    tvShows: allContent.filter(c => c.content_type === "tv").length,
     enriched: allContent.filter(c => c.ai_enriched).length,
   };
 
