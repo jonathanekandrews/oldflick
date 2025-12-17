@@ -17,8 +17,8 @@ const PORT = process.env.NODE_ENV === 'production' ? 5000 : (process.env.API_POR
 const isDev = process.env.NODE_ENV !== 'production';
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://oldflick.com']
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://oldflick.com', 'https://staging.oldflick.com', 'https://www.oldflick.com']
     : true,
   credentials: true
 }));
@@ -55,11 +55,28 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Database: ${process.env.PGDATABASE}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Mode: ${isDev ? 'Development (use Vite for frontend)' : 'Production (serving static files)'}`);
 });
 
-export default app;
+// Keep the server process alive
+server.keepAliveTimeout = 65000;
+process.on('SIGINT', () => {
+  console.log('Shutting down gracefully...');
+  server.close(() => {
+    process.exit(0);
+  });
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+  process.exit(1);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
+});

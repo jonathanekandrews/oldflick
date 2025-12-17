@@ -16,13 +16,13 @@ export default function AIEnrichmentPanel({ content, onComplete, onCancel }) {
     setError(null);
 
     try {
-      const prompt = `Given this classic ${content.type === "movie" ? "film" : "TV show"}:
+      const prompt = `Given this classic ${content.content_type === "film" ? "film" : "TV show"}:
 Title: "${content.title || 'Unknown'}"
-Year: ${content.year || "Unknown"}
-Type: ${content.type || "movie"}
+Year: ${content.release_year || "Unknown"}
+Type: ${content.content_type || "film"}
 ${content.description ? `Synopsis: ${content.description}` : ""}
 ${content.director ? `Director: ${content.director}` : ""}
-${content.cast && content.cast.length > 0 ? `Cast: ${content.cast.join(", ")}` : ""}
+${content.actors && content.actors.length > 0 ? `Cast: ${content.actors.join(", ")}` : ""}
 
 Please provide comprehensive enrichment data for this classic content. Search the internet for accurate information and provide detailed, historically accurate information.
 
@@ -127,7 +127,7 @@ Return the data in the following JSON structure. Be thorough and detailed:`;
         <div className="mb-4">
           <h3 className="text-xl font-bold text-white mb-2">{content.title}</h3>
           <p className="text-gray-400 text-sm">
-            {content.year} • {content.type === "movie" ? "Film" : "TV Show"}
+            {content.release_year} • {content.content_type === "film" ? "Film" : "TV Show"}
           </p>
         </div>
 
@@ -241,12 +241,12 @@ Return the data in the following JSON structure. Be thorough and detailed:`;
                 </div>
               )}
 
-              {enrichedData.imdb_rating && (
+              {enrichedData.rating && (
                 <div>
                   <h4 className="text-sm font-semibold text-gray-400 mb-2">RATING</h4>
                   <div className="flex items-center gap-2">
                     <span className="text-yellow-500 text-xl">★</span>
-                    <span className="text-white font-bold text-xl">{enrichedData.imdb_rating}/10</span>
+                    <span className="text-white font-bold text-xl">{enrichedData.rating}/10</span>
                   </div>
                 </div>
               )}

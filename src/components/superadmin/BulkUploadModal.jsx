@@ -47,17 +47,16 @@ export default function BulkUploadModal({ onClose, onComplete }) {
           properties: {
             title: { type: "string" },
             type: { type: "string", enum: ["movie", "tv_show"] },
-            year: { type: "number" },
+            release_year: { type: "number" },
             description: { type: "string" },
             video_url: { type: "string" },
-            thumbnail_url: { type: "string" },
-            backdrop_url: { type: "string" },
+            poster_url: { type: "string" },
             director: { type: "string" },
-            cast: { type: "array", items: { type: "string" } },
+            actors: { type: "array", items: { type: "string" } },
             genre: { type: "array", items: { type: "string" } },
-            rating: { type: "string" },
-            imdb_rating: { type: "number" },
-            duration: { type: "string" }
+            rating: { type: "number" },
+            runtime_minutes: { type: "number" },
+            content_type: { type: "string" }
           },
           required: ["title", "type", "video_url"]
         }
@@ -92,7 +91,7 @@ export default function BulkUploadModal({ onClose, onComplete }) {
           setStatus(`Enriching ${i + 1}/${total}: ${item.title}...`);
           
           try {
-            const prompt = `Enrich this classic ${item.type}: "${item.title}" (${item.year}). Provide comprehensive data.`;
+            const prompt = `Enrich this classic ${item.content_type}: "${item.title}" (${item.release_year}). Provide comprehensive data.`;
             
             const enrichmentSchema = {
               type: "object",

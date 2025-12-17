@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(find:*)",
+      "Bash(timeout 10 node:*)",
+      "Bash(ipconfig /flushdns:*)",
+      "Bash(nslookup:*)",
+      "Bash(Test-NetConnection -ComputerName db.oodvbtxbeoxpilrzbxmg.supabase.co -Port 5432)",
+      "Bash(timeout 5 bash -c \"</dev/tcp/db.oodvbtxbeoxpilrzbxmg.supabase.co/5432\")",
+      "Bash(node:*)",
+      "Bash(timeout 30 npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(wc -l echo \"films found\" curl -s http://localhost:3001/api/content?content_type=tv)",
+      "Bash(timeout 30 node:*)",
+      "Bash(timeout 60 node:*)",
+      "Bash(psql:*)"
+    ]
+  }
+}

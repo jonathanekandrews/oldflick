@@ -23,21 +23,15 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
   const [formData, setFormData] = useState(content || {
     title: "",
     description: "",
-    type: "movie",
-    year: new Date().getFullYear(),
-    duration: "",
-    thumbnail_url: "",
-    backdrop_url: "",
+    content_type: "film",
+    release_year: new Date().getFullYear(),
+    runtime_minutes: "",
+    poster_url: "",
     video_url: "",
-    trailer_url: "",
     genre: "",
     rating: "",
-    imdb_rating: 0,
-    cast: [],
+    actors: [],
     director: "",
-    is_featured: false,
-    is_masterpiece: false,
-    is_cult: false
   });
 
   const [newCast, setNewCast] = useState("");
@@ -85,60 +79,50 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
 
             <div className="space-y-2">
               <Label htmlFor="type" className="text-white">Type *</Label>
-              <Select value={formData.type} onValueChange={(value) => handleChange("type", value)}>
+              <Select value={formData.content_type} onValueChange={(value) => handleChange("content_type", value)}>
                 <SelectTrigger className="bg-white/10 border-white/20 text-white">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="movie">Movie</SelectItem>
-                  <SelectItem value="tv_show">TV Show</SelectItem>
+                  <SelectItem value="film">Film</SelectItem>
+                  <SelectItem value="tv">TV</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="year" className="text-white">Year</Label>
+              <Label htmlFor="release_year" className="text-white">Release Year</Label>
               <Input
-                id="year"
+                id="release_year"
                 type="number"
-                value={formData.year}
-                onChange={(e) => handleChange("year", parseInt(e.target.value))}
+                value={formData.release_year}
+                onChange={(e) => handleChange("release_year", parseInt(e.target.value))}
                 className="bg-white/10 border-white/20 text-white"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="duration" className="text-white">Duration</Label>
+              <Label htmlFor="runtime_minutes" className="text-white">Runtime (minutes)</Label>
               <Input
-                id="duration"
-                placeholder="e.g., 120 min or Season 1, 8 episodes"
-                value={formData.duration}
-                onChange={(e) => handleChange("duration", e.target.value)}
+                id="runtime_minutes"
+                type="number"
+                placeholder="e.g., 120"
+                value={formData.runtime_minutes}
+                onChange={(e) => handleChange("runtime_minutes", parseInt(e.target.value))}
                 className="bg-white/10 border-white/20 text-white"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="rating" className="text-white">Rating</Label>
+              <Label htmlFor="rating" className="text-white">Rating (IMDb style, 0-10)</Label>
               <Input
                 id="rating"
-                placeholder="e.g., PG, PG-13, R"
-                value={formData.rating}
-                onChange={(e) => handleChange("rating", e.target.value)}
-                className="bg-white/10 border-white/20 text-white"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="imdb_rating" className="text-white">IMDb Rating</Label>
-              <Input
-                id="imdb_rating"
                 type="number"
                 step="0.1"
                 min="0"
                 max="10"
-                value={formData.imdb_rating}
-                onChange={(e) => handleChange("imdb_rating", parseFloat(e.target.value))}
+                value={formData.rating}
+                onChange={(e) => handleChange("rating", parseFloat(e.target.value))}
                 className="bg-white/10 border-white/20 text-white"
               />
             </div>
@@ -229,25 +213,13 @@ export default function ContentForm({ content, onSubmit, onCancel, isSubmitting 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="thumbnail_url" className="text-white">Poster/Thumbnail URL</Label>
+              <Label htmlFor="poster_url" className="text-white">Poster URL</Label>
               <Input
-                id="thumbnail_url"
+                id="poster_url"
                 type="url"
                 placeholder="https://..."
-                value={formData.thumbnail_url}
-                onChange={(e) => handleChange("thumbnail_url", e.target.value)}
-                className="bg-white/10 border-white/20 text-white"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="backdrop_url" className="text-white">Backdrop URL</Label>
-              <Input
-                id="backdrop_url"
-                type="url"
-                placeholder="https://..."
-                value={formData.backdrop_url}
-                onChange={(e) => handleChange("backdrop_url", e.target.value)}
+                value={formData.poster_url}
+                onChange={(e) => handleChange("poster_url", e.target.value)}
                 className="bg-white/10 border-white/20 text-white"
               />
             </div>

@@ -51,8 +51,8 @@ export default function ContentManagement() {
     return null;
   }
 
-  const filmCount = allContent.filter(c => c.type === 'film').length;
-  const tvCount = allContent.filter(c => c.type === 'tv').length;
+  const filmCount = allContent.filter(c => c.content_type === 'film').length;
+  const tvCount = allContent.filter(c => c.content_type === 'tv').length;
 
   return (
     <div className="min-h-screen oldflick-gradient py-16">

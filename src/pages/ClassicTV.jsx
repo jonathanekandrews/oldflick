@@ -48,7 +48,7 @@ export default function ClassicTV() {
     }
   };
 
-  const tvShows = allContent.filter(c => c.type === "tv_show");
+  const tvShows = allContent.filter(c => c.content_type === "tv");
   
   const groupByGenre = () => {
     const grouped = {};
@@ -70,8 +70,8 @@ export default function ClassicTV() {
   
   const stats = {
     total: tvShows.length,
-    topRated: tvShows.filter(tv => tv.imdb_rating >= 8).length,
-    decades: new Set(tvShows.map(tv => Math.floor(tv.year / 10) * 10)).size,
+    topRated: tvShows.filter(tv => tv.rating >= 8).length,
+    decades: new Set(tvShows.map(tv => Math.floor(tv.release_year / 10) * 10)).size,
     unique: genreGroups
   };
 
@@ -92,7 +92,7 @@ export default function ClassicTV() {
         <div className="relative h-[70vh] w-full overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={featuredShow.backdrop_url || featuredShow.thumbnail_url || "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=1920"}
+              src={featuredShow.poster_url || "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=1920"}
               alt={featuredShow.title}
               className="w-full h-full object-cover"
             />

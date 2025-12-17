@@ -60,8 +60,8 @@ export default function MyList() {
   
   const stats = {
     total: favoriteContent.length,
-    movies: favoriteContent.filter(c => c.type === "movie").length,
-    tvShows: favoriteContent.filter(c => c.type === "tv_show").length,
+    movies: favoriteContent.filter(c => c.content_type === "film").length,
+    tvShows: favoriteContent.filter(c => c.content_type === "tv").length,
   };
 
   return (
@@ -176,7 +176,7 @@ export default function MyList() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <img
-                              src={item.thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=100"}
+                              src={item.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=100"}
                               alt={item.title}
                               className="w-12 h-16 object-cover rounded"
                             />
@@ -198,12 +198,12 @@ export default function MyList() {
                             <span className="text-white capitalize">{item.type?.replace("_", " ")}</span>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-white">{item.year}</td>
+                        <td className="px-6 py-4 text-white">{item.release_year}</td>
                         <td className="px-6 py-4">
-                          {item.imdb_rating ? (
+                          {item.rating ? (
                             <div className="flex items-center gap-1">
                               <span className="text-yellow-500">★</span>
-                              <span className="text-white">{item.imdb_rating}</span>
+                              <span className="text-white">{item.rating}</span>
                             </div>
                           ) : (
                             <span className="text-gray-500">-</span>

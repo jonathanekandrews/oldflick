@@ -17,7 +17,7 @@ export default function ContentCard({ content, user }) {
     >
       <div className="relative aspect-[2/3] rounded-lg overflow-hidden content-card-hover">
         <img
-          src={content.thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400"}
+          src={content.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400"}
           alt={content.title}
           className="w-full h-full object-cover"
         />
@@ -26,13 +26,13 @@ export default function ContentCard({ content, user }) {
             <h3 className="font-semibold text-sm mb-1 line-clamp-2 text-white">
               {content.title}
             </h3>
-            {content.year && (
-              <p className="text-xs text-gray-300">{content.year}</p>
+            {content.release_year && (
+              <p className="text-xs text-gray-300">{content.release_year}</p>
             )}
-            {content.imdb_rating && (
+            {content.rating && (
               <div className="flex items-center gap-1 mt-1">
                 <span className="text-yellow-500 text-xs">★</span>
-                <span className="text-xs text-white">{content.imdb_rating}</span>
+                <span className="text-xs text-white">{content.rating}</span>
               </div>
             )}
           </div>

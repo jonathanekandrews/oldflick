@@ -4,6 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
+packages = ["u-root-cmds"]
 
 [workflows]
 runButton = "Project"
@@ -40,6 +41,10 @@ externalPort = 4200
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 5001
+externalPort = 3000
 
 [[ports]]
 localPort = 5002

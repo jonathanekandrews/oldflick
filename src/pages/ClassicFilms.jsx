@@ -49,7 +49,7 @@ export default function ClassicFilms() {
     }
   };
 
-  const movies = allContent.filter(c => c.type === "movie");
+  const movies = allContent.filter(c => c.content_type === "film");
   
   const groupByGenre = () => {
     const grouped = {};
@@ -73,8 +73,8 @@ export default function ClassicFilms() {
   
   const stats = {
     total: movies.length,
-    topRated: movies.filter(m => m.imdb_rating >= 8).length,
-    decades: new Set(movies.map(m => Math.floor(m.year / 10) * 10)).size,
+    topRated: movies.filter(m => m.rating >= 8).length,
+    decades: new Set(movies.map(m => Math.floor(m.release_year / 10) * 10)).size,
     directors: new Set(movies.map(m => m.director).filter(Boolean)).size,
   };
 
@@ -95,7 +95,7 @@ export default function ClassicFilms() {
         <div className="relative h-[70vh] w-full overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={featuredMovie.backdrop_url || featuredMovie.thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920"}
+              src={featuredMovie.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920"}
               alt={featuredMovie.title}
               className="w-full h-full object-cover"
             />
