@@ -29,7 +29,7 @@ if [ "$BRANCH" = "production" ]; then
   read -p "Enter deployment passcode: " -r PASSCODE
 
   # Define the correct passcode (change this to your desired passcode)
-  CORRECT_PASSCODE="oldflick-deploy-2025"
+  CORRECT_PASSCODE="1066"
 
   # Verify passcode
   if [ "$PASSCODE" != "$CORRECT_PASSCODE" ]; then
