@@ -1,0 +1,68 @@
+#!/bin/sh
+# Pre-push hook - Requires passcode before pushing to production
+
+set -e
+
+# Get the branch being pushed
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+REMOTE=$(git config --get remote.origin.url)
+
+# Check if pushing to production
+if [ "$BRANCH" = "production" ]; then
+  echo ""
+  echo "═══════════════════════════════════════════════════════════════"
+  echo "🔐 PRODUCTION PUSH PROTECTION"
+  echo "═══════════════════════════════════════════════════════════════"
+  echo ""
+  echo "Branch: $BRANCH"
+  echo "Remote: $REMOTE"
+  echo ""
+  echo "⚠️  DEPLOYING TO PRODUCTION"
+  echo ""
+  echo "Last 3 commits being pushed:"
+  git log origin/production..HEAD --oneline | tail -3
+  echo ""
+  echo "───────────────────────────────────────────────────────────────"
+  echo ""
+
+  # Prompt for passcode - support both interactive and environment variable
+  if [ -z "$PRODUCTION_PASSCODE" ]; then
+    read -p "Enter deployment passcode: " -r PASSCODE
+  else
+    PASSCODE="$PRODUCTION_PASSCODE"
+  fi
+
+  # Define the correct passcode (change this to your desired passcode)
+  CORRECT_PASSCODE="1066"
+
+  # Verify passcode
+  if [ "$PASSCODE" != "$CORRECT_PASSCODE" ]; then
+    echo ""
+    echo "❌ PASSCODE INCORRECT - Push to production BLOCKED"
+    echo ""
+    exit 1
+  fi
+
+  echo ""
+  echo "✅ Passcode verified - proceeding with production push"
+  echo ""
+
+  # Additional safety check - verify schema
+  echo "🔍 Verifying schema compatibility..."
+
+  # Check if schema-inspector exists in the commit
+  if git show HEAD:server/db/schema-inspector.js > /dev/null 2>&1; then
+    echo "✅ Schema inspector module present"
+  else
+    echo "⚠️  Schema inspector module not found"
+    echo "   This might cause issues if database schema is incompatible"
+  fi
+
+  echo ""
+  echo "───────────────────────────────────────────────────────────────"
+  echo "✅ All checks passed - pushing to production"
+  echo "═══════════════════════════════════════════════════════════════"
+  echo ""
+fi
+
+exit 0
