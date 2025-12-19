@@ -8,6 +8,7 @@ import contentRoutes from './routes/content.js';
 import stripeRoutes from './routes/stripe.js';
 import userRoutes from './routes/user.js';
 import articlesRoutes from './routes/articles.js';
+import { getContentTableColumns, validateSchema } from './db/schema-inspector.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,8 +33,49 @@ app.use('/api/stripe', stripeRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/articles', articlesRoutes);
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/api/health', async (req, res) => {
+  try {
+    const actualColumns = await getContentTableColumns();
+    const validation = validateSchema(actualColumns);
+
+    res.json({
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      database: {
+        connected: true,
+        schema: validation
+      }
+    });
+  } catch (error) {
+    res.status(503).json({
+      status: 'error',
+      timestamp: new Date().toISOString(),
+      error: error.message,
+      database: {
+        connected: false
+      }
+    });
+  }
+});
+
+// Schema validation endpoint (for deployments)
+app.get('/api/schema-check', async (req, res) => {
+  try {
+    const actualColumns = await getContentTableColumns();
+    const validation = validateSchema(actualColumns);
+
+    if (validation.valid) {
+      res.json(validation);
+    } else {
+      res.status(400).json(validation);
+    }
+  } catch (error) {
+    res.status(500).json({
+      valid: false,
+      error: error.message,
+      message: 'Failed to validate schema'
+    });
+  }
 });
 
 if (true) {
