@@ -4,9 +4,12 @@ import pool from '../db/connection.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
 
 router.post('/create-checkout-session', authenticateToken, async (req, res) => {
+  if (!stripe) {
+    return res.status(503).json({ error: 'Stripe not configured' });
+  }
   try {
     const { priceId } = req.body;
     const userId = req.user.id;
@@ -58,6 +61,9 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
 });
 
 router.post('/create-portal-session', authenticateToken, async (req, res) => {
+  if (!stripe) {
+    return res.status(503).json({ error: 'Stripe not configured' });
+  }
   try {
     const userId = req.user.id;
 
