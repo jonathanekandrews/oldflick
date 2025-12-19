@@ -4,6 +4,32 @@ import { authenticateToken, requireAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
+// Map database fields to frontend-expected field names
+const mapContentFields = (row) => {
+  if (!row) return row;
+
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description,
+    content_type: row.type || row.content_type,
+    genre: row.genre,
+    release_year: row.year || row.release_year,
+    rating: row.rating || row.imdb_rating,
+    runtime_minutes: row.duration || row.runtime_minutes,
+    poster_url: row.thumbnail_url || row.backdrop_url || row.poster_url,
+    director: row.director,
+    actors: row.cast_members || row.actors,
+    video_url: row.video_url,
+    trailer_url: row.trailer_url,
+    is_featured: row.is_featured,
+    is_masterpiece: row.is_masterpiece,
+    is_cult: row.is_cult,
+    created_date: row.created_date,
+    updated_date: row.updated_date
+  };
+};
+
 router.get('/', async (req, res) => {
   try {
     const { content_type, genre, featured, search } = req.query;
@@ -13,8 +39,9 @@ router.get('/', async (req, res) => {
     let paramCount = 1;
 
     if (content_type) {
-      query += ` AND content_type = $${paramCount++}`;
+      query += ` AND (type = $${paramCount} OR content_type = $${paramCount})`;
       params.push(content_type);
+      paramCount++;
     }
 
     if (genre) {
@@ -34,7 +61,7 @@ router.get('/', async (req, res) => {
     query += ' ORDER BY created_date DESC';
 
     const result = await pool.query(query, params);
-    res.json(result.rows);
+    res.json(result.rows.map(mapContentFields));
   } catch (error) {
     console.error('Get content error:', error);
     res.status(500).json({ error: 'Failed to get content' });
@@ -44,12 +71,12 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM content WHERE id = $1', [req.params.id]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Content not found' });
     }
 
-    res.json(result.rows[0]);
+    res.json(mapContentFields(result.rows[0]));
   } catch (error) {
     console.error('Get content error:', error);
     res.status(500).json({ error: 'Failed to get content' });
