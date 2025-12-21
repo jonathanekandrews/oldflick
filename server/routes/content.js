@@ -79,7 +79,12 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Content not found' });
     }
 
-    res.json(fieldMapper(result.rows[0]));
+    const row = result.rows[0];
+    if (req.params.id === '20') {
+      console.log('[DEBUG] ID 20 from database:', { id: row.id, title: row.title, video_url: row.video_url ? 'exists' : 'null' });
+    }
+
+    res.json(fieldMapper(row));
   } catch (error) {
     console.error('Get content error:', error);
     res.status(500).json({ error: 'Failed to get content' });
