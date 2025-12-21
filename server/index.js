@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import pool from './db/connection.js';
 import authRoutes from './routes/auth.js';
 import contentRoutes from './routes/content.js';
 import stripeRoutes from './routes/stripe.js';
@@ -16,6 +17,78 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.NODE_ENV === 'production' ? 5000 : (process.env.API_PORT || 3001);
 const isDev = process.env.NODE_ENV !== 'production';
+
+// === DATABASE CONNECTION VALIDATOR ===
+async function validateDatabaseConnection() {
+  console.log('\n🔍 ===== DATABASE CONNECTION VALIDATION =====');
+  console.log('Timestamp:', new Date().toISOString());
+  console.log('Process ID:', process.pid);
+
+  // Check environment variables
+  console.log('\n📋 Environment Variables:');
+  const dbUrl = process.env.DATABASE_URL || 'NOT SET';
+  console.log('  DATABASE_URL:', dbUrl === 'NOT SET' ? dbUrl : dbUrl.split('@')[0] + '@' + dbUrl.split('@')[1]);
+  console.log('  NODE_ENV:', process.env.NODE_ENV);
+
+  if (!dbUrl || dbUrl === 'NOT SET') {
+    console.error('❌ CRITICAL: No DATABASE_URL found in environment!');
+    process.exit(1);
+  }
+
+  const dbHost = dbUrl.match(/\/\/([^:]+)/)?.[1] || 'UNKNOWN';
+  console.log('\n🌐 Database Host:');
+  console.log('  Parsed:', dbHost);
+  console.log('  Expected: db.oodvbtxbeoxpilrzbxmg.supabase.co');
+
+  if (!dbHost.includes('oodvbtxbeoxpilrzbxmg')) {
+    console.error('❌ ERROR: Connected to WRONG database host!');
+    console.error('   Got:', dbHost);
+    console.error('   Expected: oodvbtxbeoxpilrzbxmg.supabase.co');
+    process.exit(1);
+  }
+  console.log('  ✅ Correct database host');
+
+  // Test actual connection and query ID 20
+  console.log('\n🔌 Testing Database Connection with query for ID 20...');
+
+  try {
+    const result = await pool.query('SELECT id, title, genre, type FROM content WHERE id = 20 LIMIT 1');
+
+    if (result.rows.length === 0) {
+      console.error('❌ No record found for ID 20!');
+      process.exit(1);
+    }
+
+    const row = result.rows[0];
+    console.log('✅ Database connection successful!');
+    console.log('\n📊 Test Query Result (ID 20):');
+    console.log('  ID:', row.id);
+    console.log('  Title:', row.title);
+    console.log('  Genre:', row.genre);
+    console.log('  Type:', row.type || 'not set');
+
+    // Critical validation
+    const expectedTitle = 'The Adventures of Robin Hood';
+    if (row.title !== expectedTitle) {
+      console.error('\n❌ ❌ ❌ DATABASE MISMATCH DETECTED! ❌ ❌ ❌');
+      console.error('Expected title:', expectedTitle);
+      console.error('Got title:', row.title);
+      console.error('This indicates the app is connected to the WRONG database or data is corrupted!');
+      console.error('=================================================\n');
+    } else {
+      console.log('  ✅ Data matches expected database (Robin Hood is correct)');
+    }
+
+  } catch (err) {
+    console.error('❌ Fatal database error:', err.message);
+    process.exit(1);
+  }
+
+  console.log('============================================\n');
+}
+
+// Run validation on startup
+validateDatabaseConnection().catch(console.error);
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
