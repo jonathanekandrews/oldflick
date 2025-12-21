@@ -99,7 +99,12 @@ app.use((err, req, res, next) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Database: ${process.env.PGDATABASE}`);
+  try {
+    const dbUrl = new URL(process.env.DATABASE_URL || 'postgresql://');
+    console.log(`Database: postgres://${dbUrl.hostname}/postgres`);
+  } catch (e) {
+    console.log(`Database: ${process.env.DATABASE_URL ? 'configured' : 'NOT CONFIGURED'}`);
+  }
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Mode: ${isDev ? 'Development (use Vite for frontend)' : 'Production (serving static files)'}`);
 });
