@@ -81,7 +81,13 @@ router.get('/:id', async (req, res) => {
 
     const row = result.rows[0];
     if (req.params.id === '20') {
-      console.log('[DEBUG] ID 20 from database:', { id: row.id, title: row.title, video_url: row.video_url ? 'exists' : 'null' });
+      console.log('[CRITICAL] ID 20 RAW DATABASE ROW:', JSON.stringify({
+        id: row.id,
+        title: row.title,
+        genre: row.genre,
+        year: row.year || row.release_year,
+        type: row.type || row.content_type
+      }));
     }
 
     res.json(fieldMapper(row));
