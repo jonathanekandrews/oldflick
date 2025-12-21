@@ -81,6 +81,8 @@ jobs:
             git pull origin production
             npm install
             npm run build
+                        echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > ~/apps/oldflick/server/.env
+                                    echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> ~/apps/oldflick/server/.env
             pm2 restart oldflick
       # Step 3: Post-deployment notification (optional)
       - name: Deployment successful
