@@ -35,7 +35,7 @@ async function validateDatabaseConnection() {
     process.exit(1);
   }
 
-  const dbHost = dbUrl.match(/\/\/([^:]+)/)?.[1] || 'UNKNOWN';
+  const dbHost = dbUrl.match(/\/@([^:]+)/)?.[1] || dbUrl.match(/\/\/([^:]+)/)?.[1] || 'UNKNOWN';
   console.log('\n🌐 Database Host:');
   console.log('  Parsed:', dbHost);
   console.log('  Expected: db.oodvbtxbeoxpilrzbxmg.supabase.co');
