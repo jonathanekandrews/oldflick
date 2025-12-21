@@ -4,7 +4,16 @@ import pool from '../db/connection.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
-const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
+
+let stripe = null;
+try {
+  if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY.trim()) {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  }
+} catch (error) {
+  console.warn('⚠️  Stripe initialization failed:', error.message);
+  stripe = null;
+}
 
 router.post('/create-checkout-session', authenticateToken, async (req, res) => {
   if (!stripe) {
