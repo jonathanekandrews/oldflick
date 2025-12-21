@@ -39,50 +39,35 @@ async function validateDatabaseConnection() {
   const dbHost = dbUrl.match(/@([^:]+)/)?.[1] || 'UNKNOWN';
   console.log('\n🌐 Database Host:');
   console.log('  Parsed:', dbHost);
-  console.log('  Expected: db.oodvbtxbeoxpilrzbxmg.supabase.co');
 
-  if (!dbHost.includes('oodvbtxbeoxpilrzbxmg')) {
-    console.error('❌ ERROR: Connected to WRONG database host!');
+  // Validate Supabase V2 project connection
+  if (!dbHost.includes('uwpncgyfdlvbphetfdiw')) {
+    console.error('❌ ERROR: Not connected to Oldflick V2 project!');
     console.error('   Got:', dbHost);
-    console.error('   Expected: oodvbtxbeoxpilrzbxmg.supabase.co');
+    console.error('   Expected: db.uwpncgyfdlvbphetfdiw.supabase.co');
     process.exit(1);
   }
-  console.log('  ✅ Correct database host');
+  console.log('  ✅ Connected to Oldflick V2 project');
 
-  // Test actual connection and query ID 20
-  console.log('\n🔌 Testing Database Connection with query for ID 20...');
+  // Test actual connection
+  console.log('\n🔌 Testing Database Connection...');
 
   try {
-    const result = await pool.query('SELECT id, title, genre, type FROM content WHERE id = 20 LIMIT 1');
+    const result = await pool.query('SELECT COUNT(*) as count FROM content');
+    const contentCount = parseInt(result.rows[0].count, 10);
 
-    if (result.rows.length === 0) {
-      console.error('❌ No record found for ID 20!');
-      process.exit(1);
-    }
-
-    const row = result.rows[0];
     console.log('✅ Database connection successful!');
-    console.log('\n📊 Test Query Result (ID 20):');
-    console.log('  ID:', row.id);
-    console.log('  Title:', row.title);
-    console.log('  Genre:', row.genre);
-    console.log('  Type:', row.type || 'not set');
-
-    // Critical validation
-    const expectedTitle = 'The Adventures of Robin Hood';
-    if (row.title !== expectedTitle) {
-      console.error('\n❌ ❌ ❌ DATABASE MISMATCH DETECTED! ❌ ❌ ❌');
-      console.error('Expected title:', expectedTitle);
-      console.error('Got title:', row.title);
-      console.error('This indicates the app is connected to the WRONG database or data is corrupted!');
-      console.error('=================================================\n');
-    } else {
-      console.log('  ✅ Data matches expected database (Robin Hood is correct)');
-    }
+    console.log('  Content records in database:', contentCount);
 
   } catch (err) {
-    console.error('❌ Fatal database error:', err.message);
-    process.exit(1);
+    // Handle case where table doesn't exist yet (fresh V2 project)
+    if (err.message.includes('content') && err.message.includes('does not exist')) {
+      console.log('✅ Database connection successful!');
+      console.log('  ⚠️  Schema not yet initialized (fresh V2 project - awaiting migrations)');
+    } else {
+      console.error('❌ Fatal database error:', err.message);
+      process.exit(1);
+    }
   }
 
   console.log('============================================\n');
