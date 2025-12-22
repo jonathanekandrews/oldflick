@@ -42,6 +42,8 @@ export async function getContentTableColumns() {
     return cachedSchema;
   } catch (error) {
     console.error('❌ Failed to introspect schema:', error.message);
+    console.error('   Error code:', error.code);
+    console.error('   Full error:', error);
     // Return empty schema to prevent crashes
     return {};
   }
