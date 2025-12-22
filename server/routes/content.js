@@ -64,8 +64,10 @@ router.get('/', async (req, res) => {
     const result = await pool.query(query, params);
     res.json(result.rows.map(fieldMapper));
   } catch (error) {
-    console.error('Get content error:', error);
-    res.status(500).json({ error: 'Failed to get content' });
+    console.error('❌ Get content error:', error.message);
+    console.error('   Query error code:', error.code);
+    console.error('   Full error:', error);
+    res.status(500).json({ error: 'Failed to get content', details: error.message });
   }
 });
 
