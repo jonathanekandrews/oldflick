@@ -40,14 +40,19 @@ async function validateDatabaseConnection() {
   console.log('\n🌐 Database Host:');
   console.log('  Parsed:', dbHost);
 
-  // Validate Supabase V2 project connection
-  if (!dbHost.includes('uwpncgyfdlvbphetfdiw')) {
-    console.error('❌ ERROR: Not connected to Oldflick V2 project!');
+  // Validate Supabase connection (V1 or V2)
+  const isV1 = dbHost.includes('oodvbtxbeoxpilrzbxmg');
+  const isV2 = dbHost.includes('uwpncgyfdlvbphetfdiw');
+
+  if (!isV1 && !isV2) {
+    console.error('❌ ERROR: Not connected to a valid Oldflick Supabase project!');
     console.error('   Got:', dbHost);
-    console.error('   Expected: db.uwpncgyfdlvbphetfdiw.supabase.co');
+    console.error('   Expected: db.oodvbtxbeoxpilrzbxmg.supabase.co (V1) or db.uwpncgyfdlvbphetfdiw.supabase.co (V2)');
     process.exit(1);
   }
-  console.log('  ✅ Connected to Oldflick V2 project');
+
+  const projectVersion = isV1 ? 'V1' : 'V2';
+  console.log(`  ✅ Connected to Oldflick ${projectVersion} project`);
 
   // Test actual connection
   console.log('\n🔌 Testing Database Connection...');
