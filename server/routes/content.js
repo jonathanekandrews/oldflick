@@ -28,6 +28,26 @@ async function ensureSchemaLoaded() {
   }
 }
 
+// Debug endpoint - test raw database connection
+router.get('/debug/raw-count', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT COUNT(*) as count FROM content');
+    const count = result.rows[0].count;
+    res.json({
+      status: 'ok',
+      message: 'Raw database query successful',
+      contentCount: count
+    });
+  } catch (error) {
+    console.error('❌ Debug endpoint error:', error.message);
+    res.status(500).json({
+      error: 'Database connection failed',
+      message: error.message,
+      code: error.code
+    });
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     await ensureSchemaLoaded();
