@@ -20,7 +20,9 @@
       "Bash(cat:*)",
       "Bash(xargs:*)",
       "Bash(ls:*)",
-      "Bash(timeout 15 npm run dev:server:*)"
+      "Bash(timeout 15 npm run dev:server:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   },
   "model": "opus"
