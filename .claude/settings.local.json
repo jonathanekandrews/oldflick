@@ -14,7 +14,14 @@
       "Bash(wc -l echo \"films found\" curl -s http://localhost:3001/api/content?content_type=tv)",
       "Bash(timeout 30 node:*)",
       "Bash(timeout 60 node:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(PRODUCTION_PASSCODE=\"1066\" git push origin production)",
+      "Bash(ssh root@46.101.45.147 \"sed -i ''s/SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3cG5jZ3lmZGx2YnBoZXRmZGl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMwMzQsImV4cCI6MjA4MTkwOTAzNH0.YcJSm_9dMlyzxy5rdCzRl1SKBqOerA3M6cqyfFVKkT8/SUPABASE_ANON_KEY=sb_publishable_6Xmj6DxeWTo5zuic1kQyFQ_6SFHBTvc/'' ~/.env && sed -i ''s/NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV3cG5jZ3lmZGx2YnBoZXRmZGl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMwMzQsImV4cCI6MjA4MTkwOTAzNH0.YcJSm_9dMlyzxy5rdCzRl1SKBqOerA3M6cqyfFVKkT8/NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_6Xmj6DxeWTo5zuic1kQyFQ_6SFHBTvc/'' ~/.env && echo ''Updated server .env''\")",
+      "Bash(cat:*)",
+      "Bash(xargs:*)",
+      "Bash(ls:*)",
+      "Bash(timeout 15 npm run dev:server:*)"
     ]
-  }
+  },
+  "model": "opus"
 }

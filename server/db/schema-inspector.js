@@ -10,12 +10,26 @@ let schemaLastChecked = null;
 const SCHEMA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 /**
+ * Force invalidate the schema cache
+ */
+export function invalidateSchemaCacheForce() {
+  cachedSchema = null;
+  schemaLastChecked = null;
+  console.log('🔄 Schema cache forcefully invalidated');
+}
+
+/**
  * Get the actual column names from Supabase content table
  */
 export async function getContentTableColumns() {
   // Return cached schema if still valid
   if (cachedSchema && schemaLastChecked && Date.now() - schemaLastChecked < SCHEMA_CACHE_TTL) {
+    console.log('📦 Using cached schema');
     return cachedSchema;
+  }
+
+  if (cachedSchema && schemaLastChecked) {
+    console.log('⏰ Schema cache expired, refreshing...');
   }
 
   try {

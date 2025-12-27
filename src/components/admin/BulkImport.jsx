@@ -32,7 +32,7 @@ export default function BulkImport() {
     is_cult: false
   });
 
-  const supabaseBaseUrl = 'https://oodvbtxbeoxpilrzbxmg.supabase.co/storage/v1/object/public';
+  const supabaseBaseUrl = 'https://uwpncgyfdlvbphetfdiw.supabase.co/storage/v1/object/public';
 
   const handleAddItem = () => {
     if (!currentItem.title || !currentItem.video_url) {
