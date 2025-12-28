@@ -1,5 +1,5 @@
-// API configuration - all services on single backend during development
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// API configuration - all services routed through API Gateway during development
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'http://localhost:3000';
 const AUTH_SERVICE_URL = import.meta.env.VITE_AUTH_SERVICE_URL || API_URL;
 const CONTENT_SERVICE_URL = import.meta.env.VITE_CONTENT_SERVICE_URL || API_URL;
