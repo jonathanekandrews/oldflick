@@ -92,9 +92,9 @@ export default function ClassicTV() {
         <div className="relative h-[70vh] w-full overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={featuredShow.poster_url || "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=1920"}
+              src={featuredShow.poster_url}
               alt={featuredShow.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover bg-gradient-to-br from-gray-900 to-black"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>

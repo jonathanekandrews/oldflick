@@ -49,18 +49,18 @@ export default function ClassicFilms() {
     }
   };
 
-  const movies = allContent.filter(c => c.content_type === "film" || c.content_type === "movie");
+  const films = allContent.filter(c => c.content_type === "film");
   
   const groupByGenre = () => {
     const grouped = {};
     
     GENRE_ORDER.forEach(genre => {
       if (genre === "Masterpieces") {
-        grouped[genre] = movies.filter(m => m.is_masterpiece);
+        grouped[genre] = films.filter(m => m.is_masterpiece);
       } else if (genre === "Cult") {
-        grouped[genre] = movies.filter(m => m.is_cult);
+        grouped[genre] = films.filter(m => m.is_cult);
       } else {
-        grouped[genre] = movies.filter(m => 
+        grouped[genre] = films.filter(m =>
           m.genre && m.genre.includes(genre)
         );
       }
@@ -72,13 +72,13 @@ export default function ClassicFilms() {
   const genreGroups = groupByGenre();
   
   const stats = {
-    total: movies.length,
-    topRated: movies.filter(m => m.rating >= 8).length,
-    decades: new Set(movies.map(m => Math.floor(m.release_year / 10) * 10)).size,
-    directors: new Set(movies.map(m => m.director).filter(Boolean)).size,
+    total: films.length,
+    topRated: films.filter(m => m.rating >= 8).length,
+    decades: new Set(films.map(m => Math.floor(m.release_year / 10) * 10)).size,
+    directors: new Set(films.map(m => m.director).filter(Boolean)).size,
   };
 
-  const featuredMovie = movies.find(m => m.is_featured) || movies[0];
+  const featuredFilm = films.find(m => m.is_featured) || films[0];
 
   if (isLoading) {
     return (
@@ -91,13 +91,13 @@ export default function ClassicFilms() {
   return (
     <div className="min-h-screen oldflick-gradient">
       {/* Hero Section */}
-      {featuredMovie && (
+      {featuredFilm && (
         <div className="relative h-[70vh] w-full overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={featuredMovie.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1920"}
-              alt={featuredMovie.title}
-              className="w-full h-full object-cover"
+              src={featuredFilm.poster_url}
+              alt={featuredFilm.title}
+              className="w-full h-full object-cover bg-gradient-to-br from-gray-900 to-black"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
@@ -255,7 +255,7 @@ export default function ClassicFilms() {
         </div>
 
         {/* Empty State */}
-        {movies.length === 0 && (
+        {films.length === 0 && (
           <div className="text-center py-20">
             <Film className="w-16 h-16 text-gray-600 mx-auto mb-4" />
             <p className="text-gray-400 text-lg">No classic films available yet</p>

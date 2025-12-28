@@ -60,7 +60,7 @@ export default function MyList() {
   
   const stats = {
     total: favoriteContent.length,
-    movies: favoriteContent.filter(c => c.content_type === "film" || c.content_type === "movie").length,
+    films: favoriteContent.filter(c => c.content_type === "film").length,
     tvShows: favoriteContent.filter(c => c.content_type === "tv").length,
   };
 
@@ -105,11 +105,11 @@ export default function MyList() {
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Film className="w-5 h-5 text-blue-500" />
-                Movies
+                Films
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold text-white">{stats.movies}</p>
+              <p className="text-3xl font-bold text-white">{stats.films}</p>
             </CardContent>
           </Card>
 
@@ -176,9 +176,9 @@ export default function MyList() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <img
-                              src={item.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=100"}
+                              src={item.poster_url}
                               alt={item.title}
-                              className="w-12 h-16 object-cover rounded"
+                              className="w-12 h-16 object-cover rounded bg-gradient-to-br from-gray-800 to-black"
                             />
                             <div>
                               <div className="font-medium text-white">{item.title}</div>
@@ -190,7 +190,7 @@ export default function MyList() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            {item.type === "movie" ? (
+                            {item.content_type === "film" ? (
                               <Film className="w-4 h-4 text-blue-500" />
                             ) : (
                               <Tv className="w-4 h-4 text-purple-500" />

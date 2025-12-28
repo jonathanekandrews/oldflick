@@ -62,9 +62,9 @@ export default function ContentTable({ content, isLoading, onEdit, onDelete, onE
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <img
-                        src={item.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=100"}
+                        src={item.poster_url}
                         alt={item.title}
-                        className="w-12 h-16 object-cover rounded"
+                        className="w-12 h-16 object-cover rounded bg-gradient-to-br from-gray-800 to-black"
                       />
                       <div>
                         <div className="font-medium text-white">{item.title}</div>

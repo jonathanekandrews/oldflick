@@ -211,9 +211,9 @@ export default function Admin() {
                       {content ? (
                         <>
                           <img
-                            src={content.thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=100"}
+                            src={content.thumbnail_url || content.poster_url}
                             alt={content.title}
-                            className="w-16 h-24 object-cover rounded flex-shrink-0"
+                            className="w-16 h-24 object-cover rounded flex-shrink-0 bg-gradient-to-br from-gray-800 to-black"
                           />
                           <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-white mb-1 truncate">

@@ -51,7 +51,7 @@ export default function ContentManagement() {
     return null;
   }
 
-  const filmCount = allContent.filter(c => c.content_type === 'film' || c.content_type === 'movie').length;
+  const filmCount = allContent.filter(c => c.content_type === 'film').length;
   const tvCount = allContent.filter(c => c.content_type === 'tv').length;
 
   return (

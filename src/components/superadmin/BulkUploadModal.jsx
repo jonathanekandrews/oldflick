@@ -46,7 +46,7 @@ export default function BulkUploadModal({ onClose, onComplete }) {
           type: "object",
           properties: {
             title: { type: "string" },
-            type: { type: "string", enum: ["movie", "tv_show"] },
+            type: { type: "string", enum: ["film", "tv_show"] },
             release_year: { type: "number" },
             description: { type: "string" },
             video_url: { type: "string" },

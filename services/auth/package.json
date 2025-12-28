@@ -1,0 +1,30 @@
+{
+  "name": "oldflick-auth-service",
+  "version": "1.0.0",
+  "description": "OldFlick Authentication Service",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "keywords": [
+    "auth",
+    "jwt",
+    "microservice",
+    "oldflick"
+  ],
+  "author": "OldFlick Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

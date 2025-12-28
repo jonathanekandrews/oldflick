@@ -45,8 +45,8 @@ export default function Search() {
   const getAllGenres = () => {
     const genres = new Set();
     allContent.forEach(content => {
-      if (content.genre && Array.isArray(content.genre)) {
-        content.genre.forEach(g => genres.add(g));
+      if (content.genres && Array.isArray(content.genres)) {
+        content.genres.forEach(g => genres.add(g));
       }
     });
     return Array.from(genres).sort();
@@ -71,13 +71,13 @@ export default function Search() {
     }
 
     // Type filter
-    if (typeFilter !== "all" && content.type !== typeFilter) {
+    if (typeFilter !== "all" && content.content_type !== typeFilter) {
       return false;
     }
 
     // Genre filter
     if (genreFilter !== "all") {
-      if (!content.genre || !content.genre.includes(genreFilter)) {
+      if (!content.genres || !content.genres.includes(genreFilter)) {
         return false;
       }
     }
@@ -112,7 +112,7 @@ export default function Search() {
             Search Classic Content
           </h1>
           <p className="text-gray-400">
-            Discover timeless movies and TV shows from cinema's golden age
+            Discover timeless classic films and TV shows from cinema's golden age
           </p>
         </div>
 
@@ -157,7 +157,7 @@ export default function Search() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="movie">Movies</SelectItem>
+                <SelectItem value="film">Classic Films</SelectItem>
                 <SelectItem value="tv_show">TV Shows</SelectItem>
               </SelectContent>
             </Select>

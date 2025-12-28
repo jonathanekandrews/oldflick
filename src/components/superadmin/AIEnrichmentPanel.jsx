@@ -73,7 +73,7 @@ Return the data in the following JSON structure. Be thorough and detailed:`;
           },
           duration: {
             type: "string",
-            description: "Runtime in format like '120 min' for movies or 'Season 1, 8 episodes' for TV"
+            description: "Runtime in format like '120 min' for classic films or 'Season 1, 8 episodes' for TV"
           },
           historical_context: {
             type: "string",

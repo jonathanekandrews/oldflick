@@ -445,7 +445,7 @@ export default function Layout({ children, currentPageName }) {
                 - Classic Content -
               </p>
               <p className="text-sm text-gray-400">
-                Classic cinema at your fingertips. Stream timeless movies and TV shows.
+                Classic cinema at your fingertips. Stream timeless classic films and TV shows.
               </p>
             </div>
             <div>

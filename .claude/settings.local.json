@@ -27,7 +27,13 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(timeout 10 curl:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(npm install)",
+      "Bash(npm start)",
+      "Bash(timeout 8 npm start)",
+      "Bash(timeout 5 node:*)",
+      "Bash(taskkill:*)",
+      "Bash(npm run build:*)"
     ]
   },
   "model": "opus"

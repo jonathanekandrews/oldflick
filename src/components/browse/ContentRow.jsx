@@ -23,9 +23,9 @@ export default function ContentRow({ title, content, user }) {
             >
               <div className="relative aspect-[2/3] rounded-lg overflow-hidden content-card-hover">
                 <img
-                  src={item.poster_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400"}
+                  src={item.poster_url}
                   alt={item.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover bg-gradient-to-br from-gray-800 to-black"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-0 left-0 right-0 p-4">
