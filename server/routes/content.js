@@ -28,6 +28,26 @@ async function ensureSchemaLoaded() {
   }
 }
 
+// Debug endpoint - test raw database connection
+router.get('/debug/raw-count', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT COUNT(*) as count FROM content');
+    const count = result.rows[0].count;
+    res.json({
+      status: 'ok',
+      message: 'Raw database query successful',
+      contentCount: count
+    });
+  } catch (error) {
+    console.error('❌ Debug endpoint error:', error.message);
+    res.status(500).json({
+      error: 'Database connection failed',
+      message: error.message,
+      code: error.code
+    });
+  }
+});
+
 router.get('/', async (req, res) => {
   try {
     await ensureSchemaLoaded();
@@ -64,8 +84,10 @@ router.get('/', async (req, res) => {
     const result = await pool.query(query, params);
     res.json(result.rows.map(fieldMapper));
   } catch (error) {
-    console.error('Get content error:', error);
-    res.status(500).json({ error: 'Failed to get content' });
+    console.error('❌ Get content error:', error.message);
+    console.error('   Query error code:', error.code);
+    console.error('   Full error:', error);
+    res.status(500).json({ error: 'Failed to get content', details: error.message });
   }
 });
 
@@ -79,7 +101,18 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Content not found' });
     }
 
-    res.json(fieldMapper(result.rows[0]));
+    const row = result.rows[0];
+    if (req.params.id === '20') {
+      console.log('[CRITICAL] ID 20 RAW DATABASE ROW:', JSON.stringify({
+        id: row.id,
+        title: row.title,
+        genre: row.genre,
+        year: row.year || row.release_year,
+        type: row.type || row.content_type
+      }));
+    }
+
+    res.json(fieldMapper(row));
   } catch (error) {
     console.error('Get content error:', error);
     res.status(500).json({ error: 'Failed to get content' });
