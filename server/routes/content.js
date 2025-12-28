@@ -66,12 +66,17 @@ router.get('/', async (req, res) => {
     }
 
     if (genre) {
-      query += ` AND genre = $${paramCount++}`;
-      params.push(genre);
+      // Genre column may exist or may be stored differently
+      if (actualColumns['genre']) {
+        query += ` AND genre = $${paramCount++}`;
+        params.push(genre);
+      }
     }
 
     if (featured === 'true') {
-      query += ` AND is_featured = true`;
+      if (actualColumns['is_featured']) {
+        query += ` AND is_featured = true`;
+      }
     }
 
     if (search) {
@@ -79,7 +84,9 @@ router.get('/', async (req, res) => {
       params.push(`%${search}%`, `%${search}%`);
     }
 
-    query += ' ORDER BY created_date DESC';
+    // Order by id if created_date doesn't exist
+    const orderCol = actualColumns['created_date'] ? 'created_date' : 'id';
+    query += ` ORDER BY ${orderCol} DESC`;
 
     const result = await pool.query(query, params);
     res.json(result.rows.map(fieldMapper));

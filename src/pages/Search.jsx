@@ -26,7 +26,7 @@ export default function Search() {
 
   const { data: allContent = [], isLoading } = useQuery({
     queryKey: ['content'],
-    queryFn: () => base44.entities.Content.findMany(),
+    queryFn: () => base44.entities.content.list(),
   });
 
   useEffect(() => {

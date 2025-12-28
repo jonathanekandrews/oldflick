@@ -22,7 +22,12 @@
       "Bash(ls:*)",
       "Bash(timeout 15 npm run dev:server:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm run dev:server:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout 10 curl:*)",
+      "Bash(pkill:*)"
     ]
   },
   "model": "opus"
