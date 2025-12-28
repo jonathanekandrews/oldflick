@@ -3,9 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { apiClient as base44 } from "@/api/client";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { ArrowLeft, Play, Pause, Volume2, VolumeX, Maximize, Plus, Check, AlertCircle, X, Crown } from "lucide-react";
+import { ArrowLeft, Plus, Check, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
@@ -13,8 +12,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { hasTimeExpired } from "../components/browse/AnonymousTimer";
-import SignUpModal from "../components/browse/SignUpModal";
 
 export default function Watch() {
   const navigate = useNavigate();
@@ -28,8 +25,6 @@ export default function Watch() {
   const [isMuted, setIsMuted] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showCodecWarning, setShowCodecWarning] = useState(false);
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
-  const [canWatch, setCanWatch] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -41,35 +36,10 @@ export default function Watch() {
       return () => clearTimeout(timer);
     } else if (showAd && adCountdown === 0) {
       setShowAd(false);
-      // Check if anonymous user has time left
-      checkWatchPermission();
       // Auto-play and fullscreen after countdown ends
       handleAutoPlayAndFullscreen();
     }
   }, [showAd, adCountdown]);
-
-  const checkWatchPermission = () => {
-    // If user is logged in and has subscription, allow
-    if (user && (user.subscription_status === "free_trial" || user.subscription_status === "active")) {
-      setCanWatch(true);
-      return;
-    }
-
-    // If user is not logged in, check anonymous timer
-    if (!user) { // This condition implicitly means the user is anonymous or base44.auth.me() failed
-      const timeExpired = hasTimeExpired();
-      if (timeExpired) {
-        setCanWatch(false);
-        setShowSignUpModal(true);
-        // Pause video if playing
-        if (videoRef.current && !videoRef.current.paused) {
-          videoRef.current.pause();
-        }
-      } else {
-        setCanWatch(true);
-      }
-    }
-  };
 
   const loadData = async () => {
     try {
@@ -86,20 +56,7 @@ export default function Watch() {
         currentUser = await base44.auth.me();
         setUser(currentUser);
       } catch (error) {
-        console.log("Anonymous user or failed to fetch user - checking timer");
-        // If base44.auth.me() fails, it's likely an anonymous user or token issue.
-        // We explicitly check the timer for anonymous users.
-        if (hasTimeExpired()) {
-          setShowSignUpModal(true);
-          setCanWatch(false);
-        }
-      }
-
-      // If user is logged in but no subscription, redirect to account
-      if (currentUser && currentUser.subscription_status !== "free_trial" && 
-          currentUser.subscription_status !== "active") {
-        navigate(createPageUrl("Account"));
-        return;
+        console.log("Anonymous user or failed to fetch user");
       }
 
       const foundContent = await base44.entities.content.findById(contentId);
@@ -141,11 +98,6 @@ export default function Watch() {
   };
 
   const togglePlay = () => {
-    if (!canWatch) {
-      setShowSignUpModal(true);
-      return;
-    }
-
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
@@ -177,8 +129,7 @@ export default function Watch() {
 
   const toggleFavorite = async () => {
     if (!user) {
-        setShowSignUpModal(true);
-        return;
+      return;
     }
     const favorites = user.favorite_content || [];
     const newFavorites = isFavorite
@@ -192,7 +143,7 @@ export default function Watch() {
   const handleAutoPlayAndFullscreen = () => {
     // Small delay to ensure video element is rendered and DOM updated
     setTimeout(() => {
-      if (videoRef.current && canWatch) {
+      if (videoRef.current) {
         // Request fullscreen first
         videoRef.current.requestFullscreen().catch(err => {
           console.log("Fullscreen request failed (may be restricted):", err.message);
@@ -211,7 +162,6 @@ export default function Watch() {
   const handleSkipCountdown = () => {
     setShowAd(false);
     setAdCountdown(0);
-    checkWatchPermission();
     // Trigger auto-play and fullscreen immediately
     handleAutoPlayAndFullscreen();
   };
@@ -229,18 +179,6 @@ export default function Watch() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Sign Up Modal */}
-      <SignUpModal
-        isOpen={showSignUpModal}
-        onClose={() => {
-          setShowSignUpModal(false);
-          // If the user closes the sign-up modal after time expiry, navigate them away
-          if (!canWatch) {
-            navigate(createPageUrl("Browse"));
-          }
-        }}
-      />
-
       {/* Codec Warning Modal */}
       <Dialog open={showCodecWarning} onOpenChange={setShowCodecWarning}>
         <DialogContent className="bg-gradient-to-br from-yellow-600 to-yellow-700 border-yellow-500 max-w-md">
@@ -322,22 +260,12 @@ export default function Watch() {
               className="w-full h-full bg-black"
               src={content.video_url}
               poster={content.poster_url}
-              controls={canWatch}
+              controls
               controlsList="nodownload"
               preload="metadata"
               playsInline
               onPlay={() => {
-                // When video tries to play, re-check permissions
-                checkWatchPermission();
-                if (canWatch) {
-                  setIsPlaying(true);
-                } else {
-                  // If checkWatchPermission found user can't watch, pause the video
-                  if (videoRef.current) {
-                    videoRef.current.pause();
-                  }
-                  setShowSignUpModal(true); // Ensure modal is shown
-                }
+                setIsPlaying(true);
               }}
               onPause={() => setIsPlaying(false)}
               onError={(e) => {
@@ -363,25 +291,6 @@ export default function Watch() {
               <source src={content.video_url} type="video/mp4" />
               Your browser does not support video playback. Please try Chrome, Safari, or Edge browsers.
             </video>
-
-            {/* Overlay if can't watch */}
-            {!canWatch && (
-              <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center">
-                <div className="text-center">
-                  <Crown className="w-20 h-20 text-[var(--oldflick-gold)] mx-auto mb-6 animate-pulse" />
-                  <h3 className="text-3xl font-bold text-white mb-4">
-                    Sign up to continue watching
-                  </h3>
-                  <Button
-                    size="lg"
-                    className="bg-[var(--oldflick-gold)] text-black hover:bg-[var(--oldflick-gold)]/90 font-semibold px-8"
-                    onClick={() => setShowSignUpModal(true)}
-                  >
-                    Sign Up Free
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
         )}
       </div>
@@ -421,6 +330,8 @@ export default function Watch() {
             size="icon"
             className="border-white/30 text-white hover:bg-white/10"
             onClick={toggleFavorite}
+            disabled={!user}
+            title={user ? "Add to favorites" : "Sign in to save favorites"}
           >
             {isFavorite ? (
               <Check className="w-5 h-5" />

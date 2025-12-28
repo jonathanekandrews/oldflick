@@ -28,16 +28,6 @@ export default function HeroSection({ content, user, hasActiveSubscription }) {
   };
 
   const handlePlay = () => {
-    if (!user) {
-      base44.auth.redirectToLogin(createPageUrl(`Watch?id=${content.id}`));
-      return;
-    }
-    
-    if (!hasActiveSubscription) {
-      navigate(createPageUrl("Pricing"));
-      return;
-    }
-    
     navigate(createPageUrl(`Watch?id=${content.id}`));
   };
 
@@ -96,27 +86,16 @@ export default function HeroSection({ content, user, hasActiveSubscription }) {
               onClick={handlePlay}
             >
               <Play className="w-5 h-5 mr-2 fill-current" />
-              {hasActiveSubscription ? "Watch Now" : "Subscribe to Watch"}
+              Watch Now
             </Button>
-
-            {!hasActiveSubscription && user && (
-              <Button
-                size="lg"
-                className="bg-[var(--oldflick-gold)] hover:bg-[var(--oldflick-gold)]/90 text-black font-semibold uppercase"
-                onClick={() => navigate(createPageUrl("Pricing"))}
-              >
-                <Crown className="w-5 h-5 mr-2" />
-                {user.free_trial_used ? "Subscribe" : "Try Free 24h"}
-              </Button>
-            )}
 
             {user && (
               <Button
                 size="lg"
                 variant="outline"
                 className={`border-white font-semibold uppercase backdrop-blur-sm ${
-                  isFavorite 
-                    ? "bg-[var(--oldflick-gold)]/20 text-[var(--oldflick-gold)] border-[var(--oldflick-gold)] hover:bg-[var(--oldflick-gold)]/30" 
+                  isFavorite
+                    ? "bg-[var(--oldflick-gold)]/20 text-[var(--oldflick-gold)] border-[var(--oldflick-gold)] hover:bg-[var(--oldflick-gold)]/30"
                     : "bg-white/10 text-white hover:bg-white/20"
                 }`}
                 onClick={toggleFavorite}

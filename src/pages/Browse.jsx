@@ -5,17 +5,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import ContentRow from "../components/browse/ContentRow";
 import HeroSection from "../components/browse/HeroSection";
-import SubscriptionPrompt from "../components/browse/SubscriptionPrompt";
 import { Button } from "@/components/ui/button";
-import AnonymousTimer from "../components/browse/AnonymousTimer";
-import SignUpModal from "../components/browse/SignUpModal";
 
 export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [featuredContent, setFeaturedContent] = useState(null);
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
   const filteredContentRef = useRef(null);
 
   // Use filter state from layout
@@ -95,10 +91,6 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
     }
   };
 
-  const handleTimeExpired = () => {
-    setShowSignUpModal(true);
-  };
-
   const hasActiveSubscription = () => {
     if (!user) return false;
     return user.subscription_status === "free_trial" || user.subscription_status === "active";
@@ -171,15 +163,6 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   return (
     <div className="min-h-screen oldflick-gradient">
-      {/* Anonymous Timer - shows countdown for non-logged-in users */}
-      <AnonymousTimer user={user} onTimeExpired={handleTimeExpired} />
-
-      {/* Sign Up Modal */}
-      <SignUpModal 
-        isOpen={showSignUpModal} 
-        onClose={() => setShowSignUpModal(false)} 
-      />
-
       {/* Hero Section - Only show when no filters active */}
       {featuredContent && activeFilter === "all" && selectedGenres.length === 0 && (
         <HeroSection 
@@ -205,11 +188,6 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
             </p>
           </div>
         </div>
-      )}
-
-      {/* Subscription Prompt - only for logged in users without subscription */}
-      {user && !hasActiveSubscription() && (
-        <SubscriptionPrompt user={user} />
       )}
 
       {/* Content Rows */}
