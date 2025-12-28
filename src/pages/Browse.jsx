@@ -112,7 +112,7 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
     // Apply filter bar filters
     switch (activeFilter) {
       case "classic_films":
-        filtered = filtered.filter(c => c && c.content_type === "film");
+        filtered = filtered.filter(c => c && (c.content_type === "film" || c.content_type === "movie"));
         break;
       case "classic_tv":
         filtered = filtered.filter(c => c && c.content_type === "tv");
@@ -156,7 +156,7 @@ export default function Browse({ layoutActiveFilter, layoutSelectedGenres }) {
 
   const filteredContent = getFilteredContent();
   const contentByType = {
-    movies: filteredContent.filter(c => c && c.content_type === "film"),
+    movies: filteredContent.filter(c => c && (c.content_type === "film" || c.content_type === "movie")),
     tvShows: filteredContent.filter(c => c && c.content_type === "tv"),
   };
   const genreGroups = groupContentByGenre(filteredContent);
